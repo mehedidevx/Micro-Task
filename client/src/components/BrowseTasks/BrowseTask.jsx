@@ -15,7 +15,7 @@ const BrowseTask = () => {
 
   if (isLoading)
     return (
-      <div className="flex justify-center items-center py-10 text-gray-500">
+      <div className="flex min-h-screen justify-center items-center py-10 text-gray-500">
         Loading tasks...
       </div>
     );
@@ -28,7 +28,7 @@ const BrowseTask = () => {
     );
 
   return (
-    <div className="container mx-auto p-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+    <div className="container mx-auto p-6 grid grid-cols-1 min-h-screen sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
       {tasks.map((task) => (
         <div
           key={task._id}

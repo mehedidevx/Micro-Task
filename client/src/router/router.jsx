@@ -24,6 +24,7 @@ import AdminDashboard from "../pages/Dashboard/DashboardHome/AdminDashboard";
 import AdminRoute from "../routes/AdminRoute";
 import BuyerRoute from "../routes/BuyerRoute";
 import WorkerRoute from "../routes/WorkerRoute";
+import Contact from "../components/Contact/Contact";
 
 
 export const router = createBrowserRouter([
@@ -51,6 +52,10 @@ export const router = createBrowserRouter([
       {
         path: "about",
         Component: About,
+      },
+      {
+        path: "contact",
+        element: <Contact></Contact>
       },
       {
         path: "profile",
