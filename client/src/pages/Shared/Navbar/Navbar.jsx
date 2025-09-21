@@ -235,8 +235,7 @@ const Navbar = () => {
               </>
             ) : (
               <>
-                {/* Theme Toggle for Non-Users */}
-                <ThemeToggle />
+
 
                 {/* Login Button */}
                 <NavLink
