@@ -114,9 +114,9 @@ const DashboardLayout = () => {
       <div className="flex flex-col min-h-screen">
         
         {/* Enhanced Navbar */}
-        <header className="sticky top-0 z-50 bg-base-100/90 backdrop-blur-xl border-b border-base-300/50 shadow-xl">
+        <header className="sticky top-0 z-50 bg-base-100/90 backdrop-blur-xl border-b border-base-300/50 ">
           <div className="container mx-auto px-2">
-            <nav className="flex items-center justify-between h-20">
+            <nav className="flex  items-center justify-between h-20">
               
               {/* Left Section */}
               <div className="flex items-center gap-4">
@@ -289,7 +289,7 @@ const DashboardLayout = () => {
                 <Outlet />
               </div>
             </main>
-            <Footer />
+            
           </div>
 
           {/* Enhanced Sidebar */}
@@ -317,8 +317,8 @@ const DashboardLayout = () => {
               </div>
 
               {/* Navigation Menu */}
-              <nav className="p-4">
-                <ul className="space-y-2">
+              <nav className="p-4 ">
+                <ul className="space-y-2 sticky top-0">
                   {/* Dashboard Home */}
                   <SidebarLink to="/dashboard" icon={AiOutlineDashboard} end>
                     Dashboard Home
@@ -367,9 +367,7 @@ const DashboardLayout = () => {
                       <SidebarLink to="/dashboard/manageTasks" icon={FaTasks}>
                         Manage Tasks
                       </SidebarLink>
-                      <SidebarLink to="/dashboard/analytics" icon={BiStats}>
-                        Analytics
-                      </SidebarLink>
+                     
                     </>
                   )}
 
@@ -398,7 +396,9 @@ const DashboardLayout = () => {
             </aside>
           </div>
         </div>
+         <Footer />
       </div>
+     
     </div>
   );
 };

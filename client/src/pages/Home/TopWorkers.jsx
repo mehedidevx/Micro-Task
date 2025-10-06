@@ -240,7 +240,7 @@ const TopWorkers = () => {
                 <FaTasks className="w-5 h-5" />
                 Start Working
               </button>
-              <button className="btn btn-outline btn-lg px-8 rounded-full hover:scale-105 transition-all duration-300">
+              <button className="btn btn-outline btn-secondary btn-lg px-8 rounded-full hover:scale-105 transition-all duration-300">
                 Learn More
               </button>
             </div>

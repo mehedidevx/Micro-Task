@@ -124,7 +124,7 @@ const BrowseTask = () => {
   }
 
   return (
-    <section className="min-h-screen bg-base-200 py-16">
+    <section className="min-h-screen bg-base-100 py-16">
       <div className="container mx-auto px-4">
         {/* Header Section */}
         <div className="text-center mb-12">
@@ -148,7 +148,7 @@ const BrowseTask = () => {
         </div>
 
         {/* Search and Filter Section */}
-        <div className="bg-base-100 rounded-3xl shadow-xl p-6 mb-8">
+        <div className="bg-base-100 rounded-3xl  p-6 mb-8">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {/* Search */}
             <div className="relative">
@@ -207,7 +207,7 @@ const BrowseTask = () => {
               return (
                 <div
                   key={task._id}
-                  className="card bg-base-100 shadow-xl hover:shadow-2xl transition-all duration-500 hover:scale-105 hover:-translate-y-2 group cursor-pointer"
+                  className="card bg-base-100 border border-base-content/10  transition-all duration-500   group cursor-pointer"
                 >
                   {/* Priority Badge */}
                   <div className="absolute -top-3 -right-3 z-10">
@@ -230,9 +230,9 @@ const BrowseTask = () => {
                     <img
                       src={task.task_image_url || "/default-task.png"}
                       alt={task.task_title}
-                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                      className="w-full h-full object-cover transition-transform duration-500 "
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 transition-opacity duration-300"></div>
                   </figure>
 
                   <div className="card-body p-5">
@@ -296,7 +296,7 @@ const BrowseTask = () => {
                     <div className="card-actions justify-end">
                       <Link 
                         to={`/task-details/${task._id}`}
-                        className="btn btn-primary btn-sm rounded-full px-6 hover:btn-secondary transition-all duration-300 hover:scale-105"
+                        className="btn border-none btn-primary btn-sm rounded-full px-6 hover:btn-secondary transition-all duration-300 hover:scale-105"
                       >
                         <FaEye className="w-4 h-4" />
                         View Details
@@ -338,11 +338,11 @@ const BrowseTask = () => {
                 Join thousands of workers who are earning daily. Complete tasks, build your reputation, and grow your income!
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Link to="/register" className="btn btn-primary btn-lg px-8 rounded-full hover:btn-secondary transition-all duration-300 hover:scale-105">
+                <Link to="/register" className="btn btn-primary btn-lg border-none px-8 rounded-full hover:btn-secondary transition-all duration-300 hover:scale-105">
                   <FaUsers className="w-5 h-5" />
                   Join Now
                 </Link>
-                <Link to="/how-it-works" className="btn btn-outline btn-lg px-8 rounded-full hover:scale-105 transition-all duration-300">
+                <Link to="/how-it-works" className="btn btn-outline btn-lg px-8 border border-base-content/10 hover:scale-105 transition-all duration-300">
                   Learn More
                 </Link>
               </div>

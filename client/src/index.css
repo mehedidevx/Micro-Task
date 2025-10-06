@@ -6,7 +6,16 @@
   color: white;
 }
 .btn-primary {
-  @apply bg-[#00bba7] text-white px-4 py-2 rounded-lg hover:bg-[#00bba8] transition;
+  @apply bg-[#00bba7] text-white px-5 py-2.5 rounded-lg font-medium 
+  border border-[#00bba7] transition-all duration-300 
+  hover:bg-transparent hover:text-[#00bba7] hover:shadow-md;
+}
+
+/* ✅ Secondary Button: ডিফল্টে transparent, hover করলে ব্যাকগ্রাউন্ড */
+.btn-secondary {
+  @apply bg-transparent text-[#00bba7] px-5 py-2.5 rounded-lg font-medium 
+  border border-[#00bba7] transition-all duration-300 
+  hover:bg-[#00bba7] hover:text-white hover:shadow-md;
 }
 .text-primary {
   @apply text-[#00BBA7];

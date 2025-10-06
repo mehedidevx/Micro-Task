@@ -52,7 +52,7 @@ const Navbar = () => {
       className={({ isActive }) =>
         `flex items-center gap-3 px-4 py-2.5 rounded-xl font-medium transition-all duration-300 hover:bg-primary/10 hover:text-primary hover:shadow-md hover:scale-[1.02] ${
           isActive
-            ? "bg-gradient-to-r from-primary/20 to-primary/10 text-primary shadow-lg border border-primary/20"
+            ? "bg-gradient-to-r from-primary/20 to-primary/10 text-primary  border border-primary/20"
             : "text-base-content/80 hover:text-primary"
         } ${className}`
       }
@@ -81,7 +81,7 @@ const Navbar = () => {
   );
 
   return (
-    <header className="sticky top-0 z-50 bg-base-100/90 backdrop-blur-xl border-b border-base-300/50 shadow-xl">
+    <header className="sticky top-0 z-50 bg-base-100/90 backdrop-blur-xl border-b border-base-300/50 ">
       <div className="container mx-auto ">
         <nav className="flex items-center justify-between h-16 lg:h-20">
           

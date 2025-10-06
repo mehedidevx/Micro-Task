@@ -1,50 +1,42 @@
-import React, { useState, useEffect } from "react";
-import { Carousel } from "react-responsive-carousel";
-import "react-responsive-carousel/lib/styles/carousel.min.css";
-import { Link } from "react-router-dom";
-import { FaPlay, FaArrowRight, FaStar, FaCoins, FaTasks, FaUsers } from "react-icons/fa";
-import { HiSparkles } from "react-icons/hi";
-import { AiOutlineDashboard } from "react-icons/ai";
-import useAuth from "../../hooks/useAuth";
-import slider1 from "../../assets/slider1.jpg";
-import slider2 from "../../assets/slider2.jpg";
-import slider3 from "../../assets/slider3.jpg";
+import React, { useState, useEffect } from 'react';
+import { FaPlay, FaArrowRight, FaStar, FaCoins, FaTasks, FaUsers } from 'react-icons/fa';
+import { HiSparkles } from 'react-icons/hi';
+import { AiOutlineDashboard } from 'react-icons/ai';
 
 const slides = [
   {
-    image: slider1,
-    title: "Welcome to MicroTask",
-    description: "Find Quick Gigs & Earn Instantly",
-    subtitle: "Complete micro-tasks and earn coins that convert to real money",
-    primaryAction: "Start Earning",
-    secondaryAction: "Browse Tasks",
+    image: 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=1600',
+    title: 'Welcome to MicroTask',
+    description: 'Find Quick Gigs & Earn Instantly',
+    subtitle: 'Complete micro-tasks and earn coins that convert to real money',
+    primaryAction: 'Start Earning',
+    secondaryAction: 'Browse Tasks',
     icon: FaCoins,
-    gradient: "from-primary via-blue-600 to-secondary",
+    gradient: 'from-primary via-blue-600 to-secondary',
   },
   {
-    image: slider2,
-    title: "Hire Skilled Freelancers",
-    description: "Connect with Experts Around the World",
-    subtitle: "Post tasks and find talented workers ready to help",
-    primaryAction: "Post a Task",
-    secondaryAction: "Find Workers",
+    image: 'https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=1600',
+    title: 'Hire Skilled Freelancers',
+    description: 'Connect with Experts Around the World',
+    subtitle: 'Post tasks and find talented workers ready to help',
+    primaryAction: 'Post a Task',
+    secondaryAction: 'Find Workers',
     icon: FaUsers,
-    gradient: "from-secondary via-purple-600 to-accent",
+    gradient: 'from-secondary via-purple-600 to-accent',
   },
   {
-    image: slider3,
-    title: "Post Your Tasks Easily",
-    description: "Get Work Done Fast & Secure",
-    subtitle: "Simple posting process with secure payments and quality results",
-    primaryAction: "Create Task",
-    secondaryAction: "Learn More",
+    image: 'https://images.unsplash.com/photo-1552664730-d307ca884978?w=1600',
+    title: 'Post Your Tasks Easily',
+    description: 'Get Work Done Fast & Secure',
+    subtitle: 'Simple posting process with secure payments and quality results',
+    primaryAction: 'Create Task',
+    secondaryAction: 'Learn More',
     icon: FaTasks,
-    gradient: "from-accent via-green-600 to-primary",
+    gradient: 'from-accent via-green-600 to-primary',
   },
 ];
 
 const HeroSection = () => {
-  const { user } = useAuth();
   const [currentSlide, setCurrentSlide] = useState(0);
 
   // Auto-play functionality
@@ -131,22 +123,16 @@ const HeroSection = () => {
 
                   {/* Action Buttons */}
                   <div className="flex flex-col sm:flex-row gap-4">
-                    <Link
-                      to={user ? "/dashboard" : "/register"}
-                      className="btn btn-primary btn-lg px-8 hover:btn-secondary rounded-full shadow-2xl hover:shadow-primary/50 transition-all duration-300 hover:scale-105 group"
-                    >
+                    <button className="btn btn-primary btn-lg px-8 hover:btn-secondary rounded-full shadow-2xl hover:shadow-primary/50 transition-all duration-300 hover:scale-105 group">
                       <slide.icon className="w-5 h-5 group-hover:animate-bounce" />
                       {slide.primaryAction}
                       <FaArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />
-                    </Link>
+                    </button>
                     
-                    <Link
-                      to="/tasks"
-                      className="btn btn-outline btn-lg px-8 text-base-100 border-base-100 hover:bg-base-100 hover:text-base-content rounded-full transition-all duration-300 hover:scale-105"
-                    >
+                    <button className="btn btn-outline btn-secondary btn-lg px-8 text-base-100 border-base-100 hover:bg-base-100 hover:text-base-content rounded-full transition-all duration-300 hover:scale-105">
                       <FaPlay className="w-4 h-4" />
                       {slide.secondaryAction}
-                    </Link>
+                    </button>
                   </div>
 
                   {/* Trust Indicators */}
@@ -242,6 +228,17 @@ const HeroSection = () => {
       <div className="absolute bottom-32 left-10 hidden xl:block animate-float" style={{ animationDelay: '2s' }}>
         <div className="w-16 h-16 bg-gradient-to-br from-accent/20 to-warning/20 rounded-full blur-xl"></div>
       </div>
+
+      {/* CSS for animations */}
+      <style jsx>{`
+        @keyframes float {
+          0%, 100% { transform: translateY(0px); }
+          50% { transform: translateY(-20px); }
+        }
+        .animate-float {
+          animation: float 6s ease-in-out infinite;
+        }
+      `}</style>
     </section>
   );
 };
