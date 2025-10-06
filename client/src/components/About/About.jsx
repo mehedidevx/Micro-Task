@@ -49,6 +49,24 @@ const About = () => {
     { number: "99%", label: "Satisfaction Rate", icon: FaStar }
   ];
 
+  const leftContent = [
+    {
+      title: "Our Mission",
+      description: "To democratize freelance work by creating accessible opportunities for everyone, regardless of their location or background.",
+      icon: FaRocket
+    },
+    {
+      title: "Our Vision", 
+      description: "A world where anyone can earn a sustainable income through micro-tasks and contribute to global digital projects.",
+      icon: FaGlobe
+    },
+    {
+      title: "Why Choose Us",
+      description: "We offer instant payments, diverse task categories, and a supportive community that helps you grow your skills.",
+      icon: FaStar
+    }
+  ];
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-base-100 via-base-200/30 to-base-100">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-16">
@@ -62,7 +80,7 @@ const About = () => {
         >
           <div className="relative inline-block mb-6">
             <motion.div
-              className="w-24 h-24 mx-auto bg-gradient-to-br from-primary via-secondary to-accent rounded-3xl flex items-center justify-center shadow-2xl"
+              className="w-24 h-24 mx-auto bg-gradient-to-br from-primary via-secondary to-accent rounded-3xl flex items-center justify-center "
               whileHover={{ scale: 1.1, rotate: 5 }}
               transition={{ type: "spring", stiffness: 300 }}
             >
@@ -96,22 +114,22 @@ const About = () => {
           </motion.p>
         </motion.div>
 
-        {/* Main Content */}
+        {/* Main Content - Equal Height Sections */}
         <motion.div
-          className="grid lg:grid-cols-2 gap-16 items-center mb-20"
+          className="grid lg:grid-cols-2 gap-16 items-stretch mb-20" // Changed to items-stretch
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.6, delay: 0.6 }}
         >
-          {/* Left Content */}
-          <div className="space-y-8">
+          {/* Left Content - Enhanced with more content */}
+          <div className="flex flex-col h-full">
             <motion.div
-              className="bg-gradient-to-br from-base-100 to-base-200/50 backdrop-blur-xl rounded-3xl p-8 shadow-2xl border border-base-300/20"
+              className="bg-gradient-to-br from-base-100 to-base-200/50 backdrop-blur-xl rounded-3xl p-8 border border-base-content/10 flex-1 flex flex-col"
               whileHover={{ y: -5, shadow: "0 25px 50px -12px rgba(0, 0, 0, 0.25)" }}
               transition={{ duration: 0.3 }}
             >
               <motion.p
-                className="text-lg leading-relaxed text-base-content/80 mb-6"
+                className="text-lg leading-relaxed text-base-content/80 mb-6 flex-1"
                 initial={{ x: -40, opacity: 0 }}
                 animate={{ x: 0, opacity: 1 }}
                 transition={{ duration: 0.5, delay: 0.8 }}
@@ -122,7 +140,7 @@ const About = () => {
               </motion.p>
 
               <motion.p
-                className="text-lg leading-relaxed text-base-content/80 mb-6"
+                className="text-lg leading-relaxed text-base-content/80 mb-6 flex-1"
                 initial={{ x: 40, opacity: 0 }}
                 animate={{ x: 0, opacity: 1 }}
                 transition={{ duration: 0.5, delay: 1 }}
@@ -133,7 +151,7 @@ const About = () => {
               </motion.p>
 
               <motion.p
-                className="text-lg leading-relaxed text-base-content/80"
+                className="text-lg leading-relaxed text-base-content/80 flex-1"
                 initial={{ x: -40, opacity: 0 }}
                 animate={{ x: 0, opacity: 1 }}
                 transition={{ duration: 0.5, delay: 1.2 }}
@@ -143,11 +161,33 @@ const About = () => {
               </motion.p>
             </motion.div>
 
+            {/* Additional Content Cards */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-6">
+              {leftContent.map((item, index) => (
+                <motion.div
+                  key={index}
+                  className="bg-gradient-to-br from-primary/10 to-secondary/10 backdrop-blur-xl rounded-2xl p-4 border border-primary/20 flex flex-col h-full"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 1.4 + index * 0.1 }}
+                  whileHover={{ scale: 1.05, y: -2 }}
+                >
+                  <div className="flex items-center gap-2 mb-2">
+                    <item.icon className="w-5 h-5 text-primary" />
+                    <h4 className="font-bold text-sm text-primary">{item.title}</h4>
+                  </div>
+                  <p className="text-xs text-base-content/70 flex-1">
+                    {item.description}
+                  </p>
+                </motion.div>
+              ))}
+            </div>
+
             <motion.div
-              className="bg-gradient-to-r from-primary/10 via-secondary/10 to-accent/10 backdrop-blur-xl rounded-2xl p-6 border border-primary/20"
+              className="bg-gradient-to-r from-primary/10 via-secondary/10 to-accent/10 backdrop-blur-xl rounded-2xl p-6 border border-primary/20 mt-6"
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
-              transition={{ duration: 0.5, delay: 1.4 }}
+              transition={{ duration: 0.5, delay: 1.7 }}
               whileHover={{ scale: 1.02 }}
             >
               <div className="flex items-center gap-4 mb-3">
@@ -160,19 +200,19 @@ const About = () => {
             </motion.div>
           </div>
 
-          {/* Right Visual */}
+          {/* Right Visual - Made equal height */}
           <motion.div
-            className="relative"
+            className="flex flex-col h-full"
             initial={{ opacity: 0, x: 50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, delay: 0.8 }}
           >
-            <div className="relative bg-gradient-to-br from-primary/20 via-secondary/20 to-accent/20 backdrop-blur-xl rounded-3xl p-8 border border-base-300/20">
-              <div className="grid grid-cols-2 gap-4">
+            <div className="relative bg-gradient-to-br from-primary/20 via-secondary/20 to-accent/20 backdrop-blur-xl rounded-3xl p-8 border border-base-300/20 flex-1 flex flex-col">
+              <div className="grid grid-cols-2 gap-4 flex-1">
                 {features.map((feature, index) => (
                   <motion.div
                     key={index}
-                    className="bg-base-100/80 backdrop-blur-sm rounded-2xl p-4 text-center shadow-lg"
+                    className="bg-base-100/80 backdrop-blur-sm rounded-2xl p-4  text-center border border-base-content/10 flex flex-col items-center justify-center"
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5, delay: 1 + index * 0.1 }}
@@ -184,12 +224,28 @@ const About = () => {
                     <h4 className="font-bold text-sm text-base-content mb-1">
                       {feature.title}
                     </h4>
-                    <p className="text-xs text-base-content/60">
+                    <p className="text-xs text-base-content/60 flex-1">
                       {feature.description}
                     </p>
                   </motion.div>
                 ))}
               </div>
+              
+              {/* Additional Feature Info */}
+              <motion.div
+                className="mt-6 p-4 bg-base-100/50 rounded-2xl border border-base-content/10"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.5, delay: 1.5 }}
+              >
+                <div className="flex items-center gap-3 mb-2">
+                  <FaLightbulb className="w-5 h-5 text-warning" />
+                  <h5 className="font-bold text-base-content">Pro Tip</h5>
+                </div>
+                <p className="text-sm text-base-content/70">
+                  Complete 5+ tasks daily to unlock premium features and higher coin rewards!
+                </p>
+              </motion.div>
               
               {/* Floating Elements */}
               <motion.div
@@ -208,7 +264,7 @@ const About = () => {
 
         {/* Stats Section */}
         <motion.div
-          className="bg-gradient-to-r from-base-100 to-base-200/50 backdrop-blur-xl rounded-3xl p-8 shadow-2xl border border-base-300/20 mb-20"
+          className="bg-gradient-to-r from-base-100 to-base-200/50 backdrop-blur-xl rounded-3xl p-8 border border-base-content/10 mb-20"
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 1.6 }}
@@ -244,35 +300,6 @@ const About = () => {
               </motion.div>
             ))}
           </div>
-        </motion.div>
-
-        {/* Call to Action */}
-        <motion.div
-          className="text-center"
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.8, delay: 2.4 }}
-        >
-          <motion.div
-            className="bg-gradient-to-r from-primary via-secondary to-accent p-8 rounded-3xl shadow-2xl"
-            whileHover={{ scale: 1.02 }}
-            transition={{ duration: 0.3 }}
-          >
-            <FaGlobe className="w-16 h-16 mx-auto mb-6 text-white animate-pulse" />
-            <h3 className="text-3xl font-bold text-white mb-4">
-              Ready to Start Your Journey?
-            </h3>
-            <p className="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
-              Join thousands of freelancers and businesses who are already earning and growing with MicroTask
-            </p>
-            <motion.button
-              className="btn btn-lg bg-white text-primary hover:bg-base-200 border-none shadow-lg px-12 rounded-full font-bold text-lg"
-              whileHover={{ scale: 1.05, shadow: "0 20px 40px rgba(0,0,0,0.3)" }}
-              whileTap={{ scale: 0.95 }}
-            >
-              Get Started Today
-            </motion.button>
-          </motion.div>
         </motion.div>
       </div>
     </div>

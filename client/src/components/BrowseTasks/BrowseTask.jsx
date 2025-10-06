@@ -1,6 +1,16 @@
 import React, { useState, useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { FaCoins, FaUsers, FaClock, FaSearch, FaFilter, FaEye, FaCalendarAlt, FaTasks, FaStar } from "react-icons/fa";
+import {
+  FaCoins,
+  FaUsers,
+  FaClock,
+  FaSearch,
+  FaFilter,
+  FaEye,
+  FaCalendarAlt,
+  FaTasks,
+  FaStar,
+} from "react-icons/fa";
 import { HiSparkles } from "react-icons/hi";
 import { Link } from "react-router-dom";
 import useAxios from "../../hooks/useAxios";
@@ -11,7 +21,11 @@ const BrowseTask = () => {
   const [sortBy, setSortBy] = useState("latest");
   const [filterBy, setFilterBy] = useState("all");
 
-  const { data: tasks = [], isLoading, isError } = useQuery({
+  const {
+    data: tasks = [],
+    isLoading,
+    isError,
+  } = useQuery({
     queryKey: ["tasks"],
     queryFn: async () => {
       const res = await axios.get("/tasks");
@@ -21,14 +35,15 @@ const BrowseTask = () => {
 
   // Filter and sort tasks
   const filteredTasks = useMemo(() => {
-    let filtered = tasks.filter(task => 
-      task.task_title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      task.task_detail.toLowerCase().includes(searchTerm.toLowerCase())
+    let filtered = tasks.filter(
+      (task) =>
+        task.task_title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        task.task_detail.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
     // Filter by category
     if (filterBy !== "all") {
-      filtered = filtered.filter(task => task.category === filterBy);
+      filtered = filtered.filter((task) => task.category === filterBy);
     }
 
     // Sort tasks
@@ -43,7 +58,9 @@ const BrowseTask = () => {
         case "workers_needed":
           return (b.required_workers || 0) - (a.required_workers || 0);
         default: // latest
-          return new Date(b.createdAt || b._id) - new Date(a.createdAt || a._id);
+          return (
+            new Date(b.createdAt || b._id) - new Date(a.createdAt || a._id)
+          );
       }
     });
 
@@ -52,13 +69,17 @@ const BrowseTask = () => {
 
   const getRandomRating = () => (Math.random() * 2 + 3).toFixed(1);
   const getTaskPriority = (payableAmount) => {
-    if (payableAmount >= 100) return { level: "High", color: "badge-error", icon: "🔥" };
-    if (payableAmount >= 50) return { level: "Medium", color: "badge-warning", icon: "⚡" };
+    if (payableAmount >= 100)
+      return { level: "High", color: "badge-error", icon: "🔥" };
+    if (payableAmount >= 50)
+      return { level: "Medium", color: "badge-warning", icon: "⚡" };
     return { level: "Low", color: "badge-success", icon: "🌱" };
   };
 
   const getDaysLeft = (date) => {
-    const diff = Math.ceil((new Date(date) - new Date()) / (1000 * 60 * 60 * 24));
+    const diff = Math.ceil(
+      (new Date(date) - new Date()) / (1000 * 60 * 60 * 24)
+    );
     return diff;
   };
 
@@ -76,7 +97,9 @@ const BrowseTask = () => {
                 <h1 className="text-4xl lg:text-5xl font-bold text-base-content">
                   Loading <span className="text-primary">Tasks</span>
                 </h1>
-                <p className="text-base-content/70">Please wait while we fetch available tasks...</p>
+                <p className="text-base-content/70">
+                  Please wait while we fetch available tasks...
+                </p>
               </div>
             </div>
           </div>
@@ -105,14 +128,28 @@ const BrowseTask = () => {
         <div className="container mx-auto px-4">
           <div className="text-center max-w-md mx-auto">
             <div className="w-20 h-20 bg-error/20 rounded-full flex items-center justify-center mx-auto mb-6">
-              <svg className="w-10 h-10 text-error" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.864-.833-2.634 0L4.181 16.5c-.77.833.192 2.5 1.732 2.5z" />
+              <svg
+                className="w-10 h-10 text-error"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.864-.833-2.634 0L4.181 16.5c-.77.833.192 2.5 1.732 2.5z"
+                />
               </svg>
             </div>
-            <h3 className="text-2xl font-bold text-base-content mb-2">Failed to Load Tasks</h3>
-            <p className="text-base-content/70 mb-6">Please check your connection and try again.</p>
-            <button 
-              onClick={() => window.location.reload()} 
+            <h3 className="text-2xl font-bold text-base-content mb-2">
+              Failed to Load Tasks
+            </h3>
+            <p className="text-base-content/70 mb-6">
+              Please check your connection and try again.
+            </p>
+            <button
+              onClick={() => window.location.reload()}
               className="btn btn-primary rounded-full px-8"
             >
               Try Again
@@ -134,15 +171,22 @@ const BrowseTask = () => {
             </div>
             <div className="text-left">
               <h1 className="text-4xl lg:text-5xl font-bold text-base-content">
-                Browse <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">Tasks</span>
+                Browse{" "}
+                <span className="bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
+                  Tasks
+                </span>
               </h1>
-              <p className="text-base-content/70 text-lg">Find the perfect task and start earning today</p>
+              <p className="text-base-content/70 text-lg">
+                Find the perfect task and start earning today
+              </p>
             </div>
           </div>
-          
+
           <div className="flex items-center justify-center gap-2 text-base-content/60">
             <HiSparkles className="w-5 h-5 text-warning animate-spin" />
-            <span className="text-sm font-medium">{filteredTasks.length} tasks available</span>
+            <span className="text-sm font-medium">
+              {filteredTasks.length} tasks available
+            </span>
             <HiSparkles className="w-5 h-5 text-warning animate-spin" />
           </div>
         </div>
@@ -207,11 +251,13 @@ const BrowseTask = () => {
               return (
                 <div
                   key={task._id}
-                  className="card bg-base-100 border border-base-content/10  transition-all duration-500   group cursor-pointer"
+                  className="card bg-base-100 border border-base-content/10  transition-all duration-500   group "
                 >
                   {/* Priority Badge */}
                   <div className="absolute -top-3 -right-3 z-10">
-                    <div className={`badge ${priority.color} badge-lg font-bold shadow-lg`}>
+                    <div
+                      className={`badge ${priority.color} badge-lg font-bold shadow-lg`}
+                    >
                       {priority.icon} {priority.level}
                     </div>
                   </div>
@@ -268,14 +314,26 @@ const BrowseTask = () => {
                       <div className="flex items-center justify-between bg-base-200/50 p-3 rounded-xl">
                         <div className="flex items-center gap-2">
                           <FaCalendarAlt className="w-4 h-4 text-accent" />
-                          <span className="text-sm font-medium text-base-content">Deadline</span>
+                          <span className="text-sm font-medium text-base-content">
+                            Deadline
+                          </span>
                         </div>
                         <div className="text-right">
                           <p className="text-sm font-bold text-base-content">
-                            {new Date(task.completion_date).toLocaleDateString()}
+                            {new Date(
+                              task.completion_date
+                            ).toLocaleDateString()}
                           </p>
-                          <p className={`text-xs ${daysLeft <= 3 ? 'text-error' : daysLeft <= 7 ? 'text-warning' : 'text-success'}`}>
-                            {daysLeft > 0 ? `${daysLeft} days left` : 'Expired'}
+                          <p
+                            className={`text-xs ${
+                              daysLeft <= 3
+                                ? "text-error"
+                                : daysLeft <= 7
+                                ? "text-warning"
+                                : "text-success"
+                            }`}
+                          >
+                            {daysLeft > 0 ? `${daysLeft} days left` : "Expired"}
                           </p>
                         </div>
                       </div>
@@ -284,7 +342,9 @@ const BrowseTask = () => {
                       <div className="flex items-center justify-between">
                         <div className="flex items-center gap-1">
                           <FaStar className="w-4 h-4 text-warning" />
-                          <span className="text-sm font-semibold text-base-content">{rating}</span>
+                          <span className="text-sm font-semibold text-base-content">
+                            {rating}
+                          </span>
                         </div>
                         <span className="text-xs text-base-content/60">
                           Client Rating
@@ -294,9 +354,15 @@ const BrowseTask = () => {
 
                     {/* Action Buttons */}
                     <div className="card-actions justify-end">
-                      <Link 
-                        to={`/task-details/${task._id}`}
-                        className="btn border-none btn-primary btn-sm rounded-full px-6 hover:btn-secondary transition-all duration-300 hover:scale-105"
+                      <Link
+                      to={`/tasksDetails/${task._id}`}
+                        onClick={(e) => {
+                          console.log("Link clicked");
+                          console.log("Task ID:", task._id);
+                          console.log("Going to:", `/tasksDetails/${task._id}`);
+                        }}
+                        
+                        className="btn z-99  btn-primary btn-sm rounded-full px-6 hover:btn-secondary cursor-pointer transition-all duration-300 hover:scale-105"
                       >
                         <FaEye className="w-4 h-4" />
                         View Details
@@ -312,13 +378,20 @@ const BrowseTask = () => {
             <div className="w-24 h-24 bg-base-300/50 rounded-full flex items-center justify-center mx-auto mb-6">
               <FaSearch className="w-12 h-12 text-base-content/30" />
             </div>
-            <h3 className="text-2xl font-bold text-base-content mb-2">No Tasks Found</h3>
+            <h3 className="text-2xl font-bold text-base-content mb-2">
+              No Tasks Found
+            </h3>
             <p className="text-base-content/60 mb-6">
-              {searchTerm ? 'Try different search terms or filters' : 'Check back later for new tasks!'}
+              {searchTerm
+                ? "Try different search terms or filters"
+                : "Check back later for new tasks!"}
             </p>
             {searchTerm && (
-              <button 
-                onClick={() => {setSearchTerm(''); setFilterBy('all');}}
+              <button
+                onClick={() => {
+                  setSearchTerm("");
+                  setFilterBy("all");
+                }}
                 className="btn btn-primary rounded-full px-8"
               >
                 Clear Filters
@@ -335,14 +408,21 @@ const BrowseTask = () => {
                 Found the Perfect Task?
               </h3>
               <p className="text-base-content/70 mb-6 max-w-2xl mx-auto">
-                Join thousands of workers who are earning daily. Complete tasks, build your reputation, and grow your income!
+                Join thousands of workers who are earning daily. Complete tasks,
+                build your reputation, and grow your income!
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Link to="/register" className="btn btn-primary btn-lg border-none px-8 rounded-full hover:btn-secondary transition-all duration-300 hover:scale-105">
+                <Link
+                  to="/register"
+                  className="btn btn-primary btn-lg border-none px-8 rounded-full hover:btn-secondary transition-all duration-300 hover:scale-105"
+                >
                   <FaUsers className="w-5 h-5" />
                   Join Now
                 </Link>
-                <Link to="/how-it-works" className="btn btn-outline btn-lg px-8 border border-base-content/10 hover:scale-105 transition-all duration-300">
+                <Link
+                  to="/how-it-works"
+                  className="btn btn-outline btn-lg px-8 border border-base-content/10 hover:scale-105 transition-all duration-300"
+                >
                   Learn More
                 </Link>
               </div>

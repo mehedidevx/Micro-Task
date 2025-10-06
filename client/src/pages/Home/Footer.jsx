@@ -55,7 +55,7 @@ const Footer = () => {
             
             {/* Brand Section */}
             <div className="lg:col-span-1 space-y-6">
-              <div className="flex items-center gap-3 group">
+              <div className="flex items-center  gap-3 group">
                 <div className="w-12 h-12 bg-gradient-to-br from-primary to-secondary rounded-2xl flex items-center justify-center shadow-lg group-hover:shadow-xl transition-shadow duration-300">
                   <HiSparkles className="w-7 h-7 text-white animate-pulse" />
                 </div>
@@ -250,13 +250,7 @@ const Footer = () => {
                 </div>
 
                 {/* Back to Top Button */}
-                <button
-                  onClick={scrollToTop}
-                  className="btn btn-circle btn-primary btn-sm hover:btn-secondary transition-all duration-300 hover:scale-110 shadow-lg hover:shadow-primary/50"
-                  aria-label="Scroll to top"
-                >
-                  <FaArrowUp className="w-4 h-4" />
-                </button>
+               
               </div>
             </div>
           </div>
@@ -268,10 +262,10 @@ const Footer = () => {
         <div className="fixed bottom-6 right-6 z-50">
           <button
             onClick={scrollToTop}
-            className="btn btn-circle btn-primary btn-lg shadow-2xl hover:shadow-primary/50 hover:btn-secondary transition-all duration-300 hover:scale-110 animate-bounce"
+            className="btn btn-circle bg-[#00bba7] text-white  btn-lg shadow-2xl  transition-all duration-300  animate-bounce"
             aria-label="Scroll to top"
           >
-            <FaArrowUp className="w-6 h-6" />
+            <FaArrowUp className="w-4 h-4" />
           </button>
         </div>
       )}

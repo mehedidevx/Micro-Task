@@ -80,7 +80,7 @@ const MyTasks = () => {
   if (isLoading) return <Loading />;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-base-300 via-base-200 to-base-100 p-6">
+    <div className="min-h-screen  p-6">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="mb-8">
@@ -94,7 +94,7 @@ const MyTasks = () => {
 
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
-          <div className="bg-base-100/80 backdrop-blur-sm rounded-2xl p-4 border border-base-content/10 shadow-sm">
+          <div className="bg-base-100/80 backdrop-blur-sm rounded-2xl p-4 border border-base-content/10 ">
             <div className="flex items-center">
               <div className="bg-primary/20 p-3 rounded-xl mr-4">
                 <FaImage className="text-2xl text-primary" />
@@ -106,7 +106,7 @@ const MyTasks = () => {
             </div>
           </div>
           
-          <div className="bg-base-100/80 backdrop-blur-sm rounded-2xl p-4 border border-base-content/10 shadow-sm">
+          <div className="bg-base-100/80 backdrop-blur-sm rounded-2xl p-4 border border-base-content/10 ">
             <div className="flex items-center">
               <div className="bg-secondary/20 p-3 rounded-xl mr-4">
                 <FaUsers className="text-2xl text-secondary" />
@@ -120,7 +120,7 @@ const MyTasks = () => {
             </div>
           </div>
           
-          <div className="bg-base-100/80 backdrop-blur-sm rounded-2xl p-4 border border-base-content/10 shadow-sm">
+          <div className="bg-base-100/80 backdrop-blur-sm rounded-2xl p-4 border border-base-content/10 ">
             <div className="flex items-center">
               <div className="bg-warning/20 p-3 rounded-xl mr-4">
                 <FaCoins className="text-2xl text-warning" />
@@ -134,7 +134,7 @@ const MyTasks = () => {
             </div>
           </div>
           
-          <div className="bg-base-100/80 backdrop-blur-sm rounded-2xl p-4 border border-base-content/10 shadow-sm">
+          <div className="bg-base-100/80 backdrop-blur-sm rounded-2xl p-4 border border-base-content/10 ">
             <div className="flex items-center">
               <div className="bg-info/20 p-3 rounded-xl mr-4">
                 <FaCalendarAlt className="text-2xl text-info" />
@@ -150,16 +150,16 @@ const MyTasks = () => {
         </div>
 
         {/* Tasks Table */}
-        <div className="bg-base-100/90 backdrop-blur-sm rounded-3xl shadow-xl overflow-hidden border border-base-content/10">
+        <div className="bg-base-100/90 backdrop-blur-sm rounded-xl  overflow-hidden border border-base-content/10">
           <div className="overflow-x-auto">
             <table className="table w-full">
               <thead className="bg-gradient-to-r from-primary to-secondary text-white">
                 <tr>
-                  <th className="rounded-tl-3xl">Task</th>
+                  <th className="">Task</th>
                   <th>Workers</th>
                   <th>Payment</th>
                   <th>Deadline</th>
-                  <th className="rounded-tr-3xl">Actions</th>
+                  <th className="">Actions</th>
                 </tr>
               </thead>
               <tbody>

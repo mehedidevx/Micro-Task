@@ -238,7 +238,7 @@ export default function HowItWorks() {
 
           {/* CTA After Steps */}
           <div className="text-center mt-12">
-            <button className="btn border-none btn-primary btn-lg px-12 rounded-full hover:btn-secondary transition-all duration-300 hover:scale-105 ">
+            <button className="btn  btn-primary btn-lg px-12 rounded-full hover:btn-secondary transition-all duration-300 hover:scale-105 ">
               <FaRocket className="w-5 h-5" />
               Get Started Now
             </button>

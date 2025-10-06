@@ -82,7 +82,7 @@ const Navbar = () => {
 
   return (
     <header className="sticky top-0 z-50 bg-base-100/90 backdrop-blur-xl border-b border-base-300/50 ">
-      <div className="container mx-auto ">
+      <div className="container mx-auto px-4">
         <nav className="flex items-center justify-between h-16 lg:h-20">
           
           {/* Logo Section */}

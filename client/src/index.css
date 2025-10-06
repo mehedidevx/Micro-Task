@@ -11,7 +11,7 @@
   hover:bg-transparent hover:text-[#00bba7] hover:shadow-md;
 }
 
-/* ✅ Secondary Button: ডিফল্টে transparent, hover করলে ব্যাকগ্রাউন্ড */
+
 .btn-secondary {
   @apply bg-transparent text-[#00bba7] px-5 py-2.5 rounded-lg font-medium 
   border border-[#00bba7] transition-all duration-300 

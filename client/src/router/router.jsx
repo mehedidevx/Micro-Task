@@ -25,6 +25,7 @@ import AdminRoute from "../routes/AdminRoute";
 import BuyerRoute from "../routes/BuyerRoute";
 import WorkerRoute from "../routes/WorkerRoute";
 import Contact from "../components/Contact/Contact";
+import PublicTaskDetails from "../components/PublicTaskDetails/PublicTaskDetails";
 
 
 export const router = createBrowserRouter([
@@ -48,6 +49,10 @@ export const router = createBrowserRouter([
       {
         path: "tasks",
         Component: BrowseTask,
+      },
+      {
+        path: "tasksDetails/:id",
+        element: <PublicTaskDetails></PublicTaskDetails>
       },
       {
         path: "about",

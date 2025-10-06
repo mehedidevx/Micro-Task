@@ -243,11 +243,11 @@ export default function FeaturedServices() {
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
                 <Link to="/tasks">
-                  <button className="btn btn-primary btn-lg px-8 rounded-full hover:btn-secondary border-none transition-all duration-300 hover:scale-105">
+                  <button className="btn btn-primary btn-lg px-8 rounded-full   transition-all duration-300 hover:scale-105">
                     View All Tasks
                   </button>
                 </Link>
-                <button className="btn border   btn-lg px-8    transition-all duration-300 ">
+                <button className="btn  btn-secondary   btn-lg px-8    transition-all duration-300 ">
                   Request Service
                 </button>
               </div>
@@ -255,13 +255,13 @@ export default function FeaturedServices() {
 
             {/* Stats Cards */}
             <div className="grid grid-cols-2 gap-4">
-              <div className="bg-base-100 rounded-2xl p-6 shadow-lg hover:shadow-xl transition-shadow">
-                <div className="text-4xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent mb-2">
+              <div className="bg-base-100 border border-base-content/10 rounded-2xl p-6 ">
+                <div className="text-4xl  font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent mb-2">
                   1,379+
                 </div>
                 <div className="text-base-content/70 text-sm">Active Tasks</div>
               </div>
-              <div className="bg-base-100 rounded-2xl p-6 shadow-lg hover:shadow-xl transition-shadow">
+              <div className="bg-base-100 rounded-2xl p-6 border border-base-content/10 transition-shadow">
                 <div className="text-4xl font-bold bg-gradient-to-r from-success to-teal-500 bg-clip-text text-transparent mb-2">
                   95+
                 </div>
@@ -269,13 +269,13 @@ export default function FeaturedServices() {
                   Avg. Coins/Task
                 </div>
               </div>
-              <div className="bg-base-100 rounded-2xl p-6 shadow-lg hover:shadow-xl transition-shadow">
+              <div className="bg-base-100 rounded-2xl p-6 border border-base-content/10 transition-shadow">
                 <div className="text-4xl font-bold bg-gradient-to-r from-warning to-orange-500 bg-clip-text text-transparent mb-2">
                   8
                 </div>
                 <div className="text-base-content/70 text-sm">Categories</div>
               </div>
-              <div className="bg-base-100 rounded-2xl p-6 shadow-lg hover:shadow-xl transition-shadow">
+              <div className="bg-base-100 rounded-2xl p-6 border border-base-content/10 transition-shadow">
                 <div className="text-4xl font-bold bg-gradient-to-r from-secondary to-pink-500 bg-clip-text text-transparent mb-2">
                   24/7
                 </div>

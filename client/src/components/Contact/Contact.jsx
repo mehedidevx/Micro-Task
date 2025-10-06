@@ -187,10 +187,9 @@ const Contact = () => {
         </motion.div>
 
         {/* Main Content */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 mb-20">
+        <div className="grid  grid-cols-1 lg:grid-cols-2 gap-16 mb-20">
           <motion.div
-            className="container  mx-auto bg-gradient-to-br from-base-100 to-base-200/50 
-  backdrop-blur-xl rounded-3xl p-6 sm:p-8 border border-base-content/10 "
+            className="container mx-auto bg-gradient-to-br from-base-100 to-base-200/50 backdrop-blur-xl rounded-3xl p-6 sm:p-8 border border-base-content/10 flex flex-col h-full"
             initial={{ opacity: 0, x: -50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, delay: 1 }}
@@ -230,8 +229,11 @@ const Contact = () => {
               </motion.div>
             )}
 
-            {/* Form */}
-            <form onSubmit={handleSubmit} className="space-y-5">
+            {/* Form - Takes full available height */}
+            <form
+              onSubmit={handleSubmit}
+              className="space-y-5 flex-1 flex flex-col"
+            >
               {/* Name & Email */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="form-control">
@@ -290,28 +292,30 @@ const Contact = () => {
                 />
               </div>
 
-              {/* Message */}
-              <div className="form-control">
+              {/* Message - Takes all remaining space */}
+              <div className="form-control flex-1 flex flex-col">
                 <label className="label">
                   <span className="label-text font-semibold flex items-center gap-2">
                     <FaComments className="w-4 h-4 text-primary" />
                     Message
                   </span>
                 </label>
-                <textarea
-                  name="message"
-                  value={formData.message}
-                  onChange={handleInputChange}
-                  className="textarea textarea-bordered w-full h-32 rounded-xl bg-base-200/50 border-2 focus:border-primary focus:bg-base-100 transition-all duration-300 resize-none"
-                  placeholder="Tell us how we can help you..."
-                  required
-                ></textarea>
+                <div className="flex-1 min-h-[150px]">
+                  <textarea
+                    name="message"
+                    value={formData.message}
+                    onChange={handleInputChange}
+                    className="textarea textarea-bordered w-full h-full rounded-xl bg-base-200/50 border-2 focus:border-primary focus:bg-base-100 transition-all duration-300 resize-none"
+                    placeholder="Tell us how we can help you..."
+                    required
+                  ></textarea>
+                </div>
               </div>
 
               {/* Submit Button */}
               <motion.button
                 type="submit"
-                className="btn btn-primary w-full rounded-xl shadow-md hover:shadow-lg transition-all duration-300"
+                className="btn btn-primary w-full rounded-xl shadow-md hover:shadow-lg transition-all duration-300 mt-4"
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 disabled={isSubmitted}
@@ -386,13 +390,12 @@ const Contact = () => {
                 ))}
               </div>
             </div>
-
           </motion.div>
         </div>
 
         {/* Map Section (Optional) */}
         <motion.div
-          className="bg-gradient-to-br from-base-100 to-base-200/50 backdrop-blur-xl rounded-3xl p-8 shadow-2xl border border-base-300/20 text-center"
+          className="bg-gradient-to-br from-base-100 to-base-200/50 backdrop-blur-xl rounded-3xl p-8  border border-base-content/10 text-center"
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 2.2 }}
