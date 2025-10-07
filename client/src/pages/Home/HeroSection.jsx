@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { FaPlay, FaArrowRight, FaStar, FaCoins, FaTasks, FaUsers } from 'react-icons/fa';
+import { FaPlay, FaArrowRight, FaStar, FaCoins, FaTasks, FaUsers, FaCheckCircle } from 'react-icons/fa';
 import { HiSparkles } from 'react-icons/hi';
 import { AiOutlineDashboard } from 'react-icons/ai';
 import { Link } from 'react-router';
@@ -7,42 +7,41 @@ import useAuth from '../../hooks/useAuth';
 
 const slides = [
   {
-    image: 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=1600',
     title: 'Welcome to MicroTask',
-    description: 'Find Quick Gigs & Earn Instantly',
-    subtitle: 'Complete micro-tasks and earn coins that convert to real money',
+    subtitle: 'Find Quick Gigs & Earn Instantly',
+    description: 'Complete micro-tasks and earn coins that convert to real money. Join thousands of workers earning daily.',
     primaryAction: 'Start Earning',
     secondaryAction: 'Browse Tasks',
     icon: FaCoins,
-    gradient: 'from-primary via-blue-600 to-secondary',
+    gradient: 'from-primary to-secondary',
+    features: ['No experience needed', 'Get paid instantly', 'Work from anywhere']
   },
   {
-    image: 'https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=1600',
     title: 'Hire Skilled Freelancers',
-    description: 'Connect with Experts Around the World',
-    subtitle: 'Post tasks and find talented workers ready to help',
+    subtitle: 'Connect with Experts Around the World',
+    description: 'Post tasks and find talented workers ready to help. Quality work delivered on time.',
     primaryAction: 'Post a Task',
     secondaryAction: 'Find Workers',
     icon: FaUsers,
-    gradient: 'from-secondary via-purple-600 to-accent',
+    gradient: 'from-secondary to-accent',
+    features: ['Verified workers', 'Secure payments', 'Quality guarantee']
   },
   {
-    image: 'https://images.unsplash.com/photo-1552664730-d307ca884978?w=1600',
     title: 'Post Your Tasks Easily',
-    description: 'Get Work Done Fast & Secure',
-    subtitle: 'Simple posting process with secure payments and quality results',
+    subtitle: 'Get Work Done Fast & Secure',
+    description: 'Simple posting process with secure payments and quality results. Track progress in real-time.',
     primaryAction: 'Create Task',
     secondaryAction: 'Learn More',
     icon: FaTasks,
-    gradient: 'from-accent via-green-600 to-primary',
+    gradient: 'from-accent to-primary',
+    features: ['Easy task creation', 'Real-time tracking', 'Fast delivery']
   },
 ];
 
 const HeroSection = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
-  const {user} = useAuth();
+  const { user } = useAuth();
 
-  // Auto-play functionality
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % slides.length);
@@ -50,24 +49,32 @@ const HeroSection = () => {
     return () => clearInterval(interval);
   }, []);
 
-  const StatCard = ({ icon: Icon, value, label, color }) => (
-    <div className="bg-base-content/10 backdrop-blur-sm rounded-2xl p-4 border border-base-content/20 hover:bg-base-content/20 transition-all duration-300 hover:scale-105">
-      <div className="flex items-center gap-3">
-        <div className={`w-10 h-10 rounded-full bg-${color}/20 flex items-center justify-center`}>
-          <Icon className={`w-5 h-5 text-${color}`} />
+  const StatCard = ({ icon: Icon, value, label, gradient }) => (
+    <div className="bg-base-200 hover:bg-base-300 rounded-2xl p-6 border border-base-300 transition-all duration-300 hover:scale-105 hover:shadow-xl group">
+      <div className="flex items-center gap-4">
+        <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${gradient} flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all`}>
+          <Icon className="w-7 h-7 text-white" />
         </div>
         <div>
-          <p className="text-2xl font-bold text-base-100">{value}</p>
-          <p className="text-sm text-base-100/80">{label}</p>
+          <p className="text-3xl font-bold text-base-content">{value}</p>
+          <p className="text-sm text-base-content/60 font-medium">{label}</p>
         </div>
       </div>
     </div>
   );
 
   return (
-    <section className="relative overflow-hidden">
-      {/* Custom Carousel */}
-      <div className="relative h-[85vh] lg:h-[90vh]">
+    <section className="relative min-h-screen bg-gradient-to-br from-base-100 via-base-200/50 to-base-100 overflow-hidden">
+      
+      {/* Animated Background Elements */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-20 right-20 w-96 h-96 bg-primary/5 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute bottom-20 left-20 w-80 h-80 bg-secondary/5 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }}></div>
+        <div className="absolute top-1/2 left-1/2 w-72 h-72 bg-accent/5 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '4s' }}></div>
+      </div>
+
+      {/* Main Content */}
+      <div className="relative z-10">
         {slides.map((slide, index) => (
           <div
             key={index}
@@ -79,118 +86,135 @@ const HeroSection = () => {
                   : 'opacity-0 translate-x-full'
             }`}
           >
-            {/* Background Image */}
-            <div className="absolute inset-0">
-              <img
-                src={slide.image}
-                alt={`Slide ${index + 1}`}
-                className="w-full h-full object-cover"
-              />
-              <div className="absolute inset-0 bg-gradient-to-r from-base-content/70 via-base-content/50 to-base-content/30"></div>
-              <div className={`absolute inset-0 bg-gradient-to-br ${slide.gradient} opacity-30`}></div>
-            </div>
-
-            {/* Content */}
-            <div className="relative z-10 container mx-auto px-4 h-full flex items-center">
+            <div className="container mx-auto px-4 py-20 lg:py-32 min-h-screen flex items-center">
               <div className="grid lg:grid-cols-2 gap-12 items-center w-full">
                 
                 {/* Left Content */}
-                <div className="text-base-100 space-y-8">
+                <div className="space-y-8">
                   {/* Badge */}
-                  <div className="inline-flex items-center gap-2 bg-base-content/10 backdrop-blur-sm px-4 py-2 rounded-full border border-base-content/20 hover:bg-base-content/20 transition-all duration-300">
-                    <slide.icon className="w-4 h-4 text-warning animate-pulse" />
-                    <span className="text-sm font-medium">Featured Service</span>
-                    <HiSparkles className="w-4 h-4 text-warning" />
+                  <div className="inline-flex items-center gap-2 bg-gradient-to-r from-primary/10 to-secondary/10 backdrop-blur-sm px-5 py-2.5 rounded-full border border-primary/20 hover:border-primary/40 transition-all duration-300">
+                    <slide.icon className="w-4 h-4 text-primary animate-pulse" />
+                    <span className="text-sm font-semibold text-base-content">Featured Service</span>
+                    <HiSparkles className="w-4 h-4 text-warning animate-bounce" />
                   </div>
 
                   {/* Title */}
-                  <div className="space-y-4">
+                  <div className="space-y-6">
                     <h1 className="text-5xl lg:text-7xl font-bold leading-tight">
-                      <span className="bg-gradient-to-r from-base-100 via-base-100 to-base-100/80 bg-clip-text text-transparent">
+                      <span className="text-base-content">
                         {slide.title.split(' ').slice(0, -1).join(' ')}
                       </span>
                       <br />
-                      <span className={`bg-gradient-to-r ${slide.gradient} bg-clip-text text-transparent animate-pulse`}>
+                      <span className={`bg-gradient-to-r ${slide.gradient} bg-clip-text text-transparent`}>
                         {slide.title.split(' ').slice(-1)}
                       </span>
                     </h1>
                     
-                    <p className="text-xl lg:text-2xl text-base-100/90 font-medium">
-                      {slide.description}
+                    <p className="text-2xl lg:text-3xl font-bold text-base-content/80">
+                      {slide.subtitle}
                     </p>
                     
-                    <p className="text-lg text-base-100/75 max-w-xl">
-                      {slide.subtitle}
+                    <p className="text-lg text-base-content/60 max-w-xl leading-relaxed">
+                      {slide.description}
                     </p>
                   </div>
 
+                  {/* Features List */}
+                  <div className="flex flex-col gap-3">
+                    {slide.features.map((feature, idx) => (
+                      <div key={idx} className="flex items-center gap-3">
+                        <div className="w-6 h-6 rounded-full bg-success/20 flex items-center justify-center">
+                          <FaCheckCircle className="w-4 h-4 text-success" />
+                        </div>
+                        <span className="text-base-content/80 font-medium">{feature}</span>
+                      </div>
+                    ))}
+                  </div>
+
                   {/* Action Buttons */}
-                  <div className="flex flex-col sm:flex-row gap-4">
-                     <Link to={user ? "/dashboard" : "/login"}>
-                    <button className="btn btn-primary btn-lg px-8 hover:btn-secondary rounded-full shadow-2xl hover:shadow-primary/50 transition-all duration-300 hover:scale-105 group">
-                      <slide.icon className="w-5 h-5 group-hover:animate-bounce" />
-                      {slide.primaryAction}
-                      <FaArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />
-                    </button>
+                  <div className="flex flex-col sm:flex-row gap-4 pt-4">
+                    <Link to={user ? "/dashboard" : "/login"}>
+                      <button className={`btn btn-lg px-8 bg-gradient-to-r ${slide.gradient} border-none text-white hover:opacity-90 rounded-2xl shadow-2xl hover:shadow-primary/50 transition-all duration-300 hover:scale-105 group`}>
+                        <slide.icon className="w-5 h-5 group-hover:animate-bounce" />
+                        {slide.primaryAction}
+                        <FaArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />
+                      </button>
                     </Link>
                     
-                    <button className="btn btn-outline btn-secondary btn-lg px-8 text-base-100 border-base-100 hover:bg-base-100 hover:text-base-content rounded-full transition-all duration-300 hover:scale-105">
+                    <button className="btn btn-lg btn-outline px-8 rounded-2xl transition-all duration-300 hover:scale-105">
                       <FaPlay className="w-4 h-4" />
                       {slide.secondaryAction}
                     </button>
                   </div>
 
                   {/* Trust Indicators */}
-                  <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6 pt-4">
+                  <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6 pt-6 border-t border-base-300">
                     <div className="flex items-center gap-1">
                       {[1, 2, 3, 4, 5].map((star) => (
                         <FaStar key={star} className="w-5 h-5 text-warning" />
                       ))}
-                      <span className="ml-2 text-base-100 font-semibold">4.9/5 Rating</span>
+                      <span className="ml-2 text-base-content font-semibold">4.9/5 Rating</span>
                     </div>
-                    <div className="text-base-100/80">
-                      <span className="font-bold text-base-100">10,000+</span> Happy Users
+                    <div className="text-base-content/80">
+                      <span className="font-bold text-base-content">10,000+</span> Happy Users
                     </div>
                   </div>
                 </div>
 
-                {/* Right Content - Stats Cards */}
-                <div className="hidden lg:block space-y-6">
+                {/* Right Content - Stats & Features */}
+                <div className="space-y-6">
+                  {/* Stats Cards */}
                   <div className="grid grid-cols-1 gap-4">
                     <StatCard 
                       icon={FaTasks} 
                       value="5,000+" 
                       label="Tasks Completed" 
-                      color="primary" 
+                      gradient="from-primary to-blue-600" 
                     />
                     <StatCard 
                       icon={FaUsers} 
                       value="2,500+" 
                       label="Active Workers" 
-                      color="secondary" 
+                      gradient="from-secondary to-purple-600" 
                     />
                     <StatCard 
                       icon={FaCoins} 
                       value="$50,000+" 
                       label="Earnings Paid" 
-                      color="warning" 
+                      gradient="from-warning to-orange-600" 
                     />
                   </div>
                   
-                  {/* Feature Highlight */}
-                  <div className="bg-base-content/10 backdrop-blur-sm rounded-3xl p-6 border border-base-content/20 hover:bg-base-content/20 transition-all duration-300">
-                    <div className="flex items-center gap-3 mb-4">
-                      <div className="w-12 h-12 bg-gradient-to-br from-primary to-secondary rounded-full flex items-center justify-center">
-                        <AiOutlineDashboard className="w-6 h-6 text-base-100" />
+                  {/* Feature Highlight Card */}
+                  <div className="bg-gradient-to-br from-base-200 to-base-200 rounded-3xl p-8 border border-base-300   transition-all duration-300">
+                    <div className="flex items-center gap-4 mb-4">
+                      <div className={`w-16 h-16 bg-gradient-to-br ${slide.gradient} rounded-2xl flex items-center justify-center shadow-lg`}>
+                        <AiOutlineDashboard className="w-8 h-8 text-white" />
                       </div>
                       <div>
-                        <h3 className="text-base-100 font-bold text-lg">Smart Dashboard</h3>
-                        <p className="text-base-100/80 text-sm">Track your progress</p>
+                        <h3 className="text-base-content font-bold text-2xl">Smart Dashboard</h3>
+                        <p className="text-base-content/60 text-sm">Track your progress</p>
                       </div>
                     </div>
-                    <p className="text-base-100/70 text-sm">
-                      Monitor your earnings, completed tasks, and performance metrics in real-time.
+                    <p className="text-base-content/70 leading-relaxed">
+                      Monitor your earnings, completed tasks, and performance metrics in real-time with our intuitive dashboard.
                     </p>
+                    
+                    {/* Mini Stats */}
+                    <div className="grid grid-cols-3 gap-4 mt-6 pt-6 border-t border-base-content/10">
+                      <div className="text-center">
+                        <p className="text-2xl font-bold text-primary">98%</p>
+                        <p className="text-xs text-base-content/60">Success Rate</p>
+                      </div>
+                      <div className="text-center">
+                        <p className="text-2xl font-bold text-secondary">24/7</p>
+                        <p className="text-xs text-base-content/60">Support</p>
+                      </div>
+                      <div className="text-center">
+                        <p className="text-2xl font-bold text-success">Fast</p>
+                        <p className="text-xs text-base-content/60">Payments</p>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -199,51 +223,32 @@ const HeroSection = () => {
         ))}
       </div>
 
-      {/* Custom Navigation Dots */}
-      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20">
-        <div className="flex items-center gap-3 bg-base-content/20 backdrop-blur-sm px-4 py-2 rounded-full border border-base-content/20">
+      {/* Navigation Dots */}
+      <div className="absolute bottom-12 left-1/2 transform -translate-x-1/2 z-20">
+        <div className="flex items-center gap-3 bg-base-200 backdrop-blur-lg px-6 py-3 rounded-full border border-base-300 shadow-xl">
           {slides.map((_, index) => (
             <button
               key={index}
               onClick={() => setCurrentSlide(index)}
-              className={`w-3 h-3 rounded-full transition-all duration-300 ${
+              className={`rounded-full transition-all duration-300 ${
                 index === currentSlide 
-                  ? 'bg-primary w-8' 
-                  : 'bg-base-100/50 hover:bg-base-100/80'
+                  ? 'bg-primary w-12 h-3' 
+                  : 'bg-base-content/30 hover:bg-base-content/50 w-3 h-3'
               }`}
             />
           ))}
         </div>
       </div>
 
-      {/* Slide Progress Bar */}
-      <div className="absolute bottom-0 left-0 right-0 h-1 bg-base-content/20 z-20">
+      {/* Progress Bar */}
+      <div className="absolute bottom-0 left-0 right-0 h-1 bg-base-300 z-20">
         <div 
-          className="h-full bg-gradient-to-r from-primary to-secondary transition-all duration-1000 ease-linear"
+          className="h-full bg-gradient-to-r from-primary via-secondary to-accent transition-all duration-1000 ease-linear"
           style={{ 
             width: `${((currentSlide + 1) / slides.length) * 100}%` 
           }}
         />
       </div>
-
-      {/* Floating Elements */}
-      <div className="absolute top-20 right-10 hidden xl:block animate-float">
-        <div className="w-20 h-20 bg-gradient-to-br from-primary/20 to-secondary/20 rounded-full blur-xl"></div>
-      </div>
-      <div className="absolute bottom-32 left-10 hidden xl:block animate-float" style={{ animationDelay: '2s' }}>
-        <div className="w-16 h-16 bg-gradient-to-br from-accent/20 to-warning/20 rounded-full blur-xl"></div>
-      </div>
-
-      {/* CSS for animations */}
-      <style jsx>{`
-        @keyframes float {
-          0%, 100% { transform: translateY(0px); }
-          50% { transform: translateY(-20px); }
-        }
-        .animate-float {
-          animation: float 6s ease-in-out infinite;
-        }
-      `}</style>
     </section>
   );
 };
