@@ -115,7 +115,7 @@ const TaskList = () => {
 
         {/* Filter and Search Section */}
         <motion.div
-          className="bg-base-100/80 backdrop-blur-xl rounded-3xl p-6 shadow-xl border border-base-300/20 mb-8"
+          className="bg-base-100/80 backdrop-blur-xl rounded-3xl p-6 border border-base-content/10 mb-8"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
@@ -199,7 +199,7 @@ const TaskList = () => {
             {filteredTasks.map((task, index) => (
               <motion.div
                 key={task._id}
-                className="group bg-gradient-to-br from-base-100 to-base-200/50 backdrop-blur-xl rounded-3xl shadow-xl border border-base-300/20 overflow-hidden hover:shadow-2xl transition-all duration-500 hover:scale-[1.02]"
+                className="group bg-gradient-to-br from-base-100 to-base-200/50 backdrop-blur-xl rounded-3xl border border-base-content/10 overflow-hidden  transition-all duration-500 hover:scale-[1.02]"
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: index * 0.1 }}

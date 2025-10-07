@@ -1,9 +1,19 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import useAuth from "../../../../hooks/useAuth";
-import { FaEdit, FaTrash, FaEye, FaCoins, FaUsers, FaCalendarAlt, FaImage } from "react-icons/fa";
+import {
+  FaEdit,
+  FaTrash,
+  FaEye,
+  FaCoins,
+  FaUsers,
+  FaCalendarAlt,
+  FaImage,
+  FaSpinner,
+  FaTasks,
+} from "react-icons/fa";
 import useAxios from "../../../../hooks/useAxios";
 import toast from "react-hot-toast";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import Loading from "../../../../components/Loading/Loading";
 
 const MyTasks = () => {
@@ -28,6 +38,23 @@ const MyTasks = () => {
       return res.data;
     },
   });
+
+  // Calculate stats with useMemo
+  const stats = useMemo(() => {
+    const totalWorkers = tasks.reduce(
+      (sum, task) => sum + (task.required_workers || 0),
+      0
+    );
+    const totalCoins = tasks.reduce(
+      (sum, task) => sum + (task.payable_amount * task.required_workers || 0),
+      0
+    );
+    const activeTasks = tasks.filter(
+      (task) => new Date(task.completion_date) > new Date()
+    ).length;
+
+    return { totalWorkers, totalCoins, activeTasks };
+  }, [tasks]);
 
   const deleteTaskMutation = useMutation({
     mutationFn: async (taskId) => {
@@ -57,7 +84,6 @@ const MyTasks = () => {
       queryClient.invalidateQueries(["myTasks"]);
       setIsEditModalOpen(false);
     } catch (error) {
-      console.log(error)
       toast.error("Failed to update task");
     }
   };
@@ -77,309 +103,486 @@ const MyTasks = () => {
     setIsViewModalOpen(true);
   };
 
+  const closeAllModals = () => {
+    setIsEditModalOpen(false);
+    setIsViewModalOpen(false);
+    setSelectedTask(null);
+  };
+
   if (isLoading) return <Loading />;
 
   return (
-    <div className="min-h-screen  p-6">
-      <div className="max-w-7xl mx-auto">
-        {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent mb-2">
-            My Created Tasks
-          </h1>
-          <p className="text-base-content/70">
-            Manage your tasks and track their progress
-          </p>
+    <div className="min-h-screen bg-base-100 p-4 sm:p-6 lg:p-8">
+      <div className="max-w-7xl mx-auto space-y-6 lg:space-y-8">
+        {/* Header Section */}
+        <div className="bg-gradient-to-r from-primary to-secondary rounded-box p-6 lg:p-8 text-primary-content">
+          <div className="flex items-center gap-4">
+            <div className="bg-primary-content/20 p-4 rounded-box backdrop-blur-sm">
+              <FaTasks className="text-3xl lg:text-4xl text-primary-content" />
+            </div>
+            <div>
+              <h1 className="text-2xl lg:text-4xl font-bold mb-2">My Created Tasks</h1>
+              <p className="text-primary-content/80 text-sm lg:text-base">
+                Manage your tasks and track their progress
+              </p>
+            </div>
+          </div>
         </div>
 
         {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
-          <div className="bg-base-100/80 backdrop-blur-sm rounded-2xl p-4 border border-base-content/10 ">
-            <div className="flex items-center">
-              <div className="bg-primary/20 p-3 rounded-xl mr-4">
-                <FaImage className="text-2xl text-primary" />
+        <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4 sm:gap-6">
+          {/* Total Tasks */}
+          <div className="card bg-base-100 border border-base-content/10 hover:border-primary/30 transition-all duration-300 group">
+            <div className="card-body p-4 sm:p-6">
+              <div className="flex items-center justify-between">
+                <div className="min-w-0 flex-1">
+                  <p className="text-base-content/70 text-xs sm:text-sm font-medium mb-1 truncate">
+                    Total Tasks
+                  </p>
+                  <h3 className="text-2xl sm:text-3xl xl:text-4xl font-bold text-primary truncate">
+                    {tasks.length}
+                  </h3>
+                </div>
+                <div className="bg-primary/10 p-3 rounded-box group-hover:scale-110 transition-transform flex-shrink-0 ml-3">
+                  <FaImage className="text-xl sm:text-2xl xl:text-3xl text-primary" />
+                </div>
               </div>
-              <div>
-                <p className="text-2xl font-bold">{tasks.length}</p>
-                <p className="text-sm text-base-content/70">Total Tasks</p>
+              <div className="mt-3 sm:mt-4 pt-3 sm:pt-4 border-t border-base-content/10">
+                <p className="text-xs sm:text-sm text-base-content/60 truncate">
+                  All created tasks
+                </p>
               </div>
             </div>
           </div>
-          
-          <div className="bg-base-100/80 backdrop-blur-sm rounded-2xl p-4 border border-base-content/10 ">
-            <div className="flex items-center">
-              <div className="bg-secondary/20 p-3 rounded-xl mr-4">
-                <FaUsers className="text-2xl text-secondary" />
+
+          {/* Total Workers */}
+          <div className="card bg-base-100 border border-base-content/10 hover:border-secondary/30 transition-all duration-300 group">
+            <div className="card-body p-4 sm:p-6">
+              <div className="flex items-center justify-between">
+                <div className="min-w-0 flex-1">
+                  <p className="text-base-content/70 text-xs sm:text-sm font-medium mb-1 truncate">
+                    Workers Needed
+                  </p>
+                  <h3 className="text-2xl sm:text-3xl xl:text-4xl font-bold text-secondary truncate">
+                    {stats.totalWorkers}
+                  </h3>
+                </div>
+                <div className="bg-secondary/10 p-3 rounded-box group-hover:scale-110 transition-transform flex-shrink-0 ml-3">
+                  <FaUsers className="text-xl sm:text-2xl xl:text-3xl text-secondary" />
+                </div>
               </div>
-              <div>
-                <p className="text-2xl font-bold">
-                  {tasks.reduce((sum, task) => sum + (task.required_workers || 0), 0)}
+              <div className="mt-3 sm:mt-4 pt-3 sm:pt-4 border-t border-base-content/10">
+                <p className="text-xs sm:text-sm text-base-content/60 truncate">
+                  Total workers required
                 </p>
-                <p className="text-sm text-base-content/70">Total Workers Needed</p>
               </div>
             </div>
           </div>
-          
-          <div className="bg-base-100/80 backdrop-blur-sm rounded-2xl p-4 border border-base-content/10 ">
-            <div className="flex items-center">
-              <div className="bg-warning/20 p-3 rounded-xl mr-4">
-                <FaCoins className="text-2xl text-warning" />
+
+          {/* Total Coins */}
+          <div className="card bg-base-100 border border-base-content/10 hover:border-accent/30 transition-all duration-300 group">
+            <div className="card-body p-4 sm:p-6">
+              <div className="flex items-center justify-between">
+                <div className="min-w-0 flex-1">
+                  <p className="text-base-content/70 text-xs sm:text-sm font-medium mb-1 truncate">
+                    Coins Invested
+                  </p>
+                  <h3 className="text-2xl sm:text-3xl xl:text-4xl font-bold text-accent truncate">
+                    {stats.totalCoins}
+                  </h3>
+                </div>
+                <div className="bg-accent/10 p-3 rounded-box group-hover:scale-110 transition-transform flex-shrink-0 ml-3">
+                  <FaCoins className="text-xl sm:text-2xl xl:text-3xl text-accent" />
+                </div>
               </div>
-              <div>
-                <p className="text-2xl font-bold">
-                  {tasks.reduce((sum, task) => sum + (task.payable_amount * task.required_workers || 0), 0)}
+              <div className="mt-3 sm:mt-4 pt-3 sm:pt-4 border-t border-base-content/10">
+                <p className="text-xs sm:text-sm text-base-content/60 truncate">
+                  Total investment
                 </p>
-                <p className="text-sm text-base-content/70">Total Coins Invested</p>
               </div>
             </div>
           </div>
-          
-          <div className="bg-base-100/80 backdrop-blur-sm rounded-2xl p-4 border border-base-content/10 ">
-            <div className="flex items-center">
-              <div className="bg-info/20 p-3 rounded-xl mr-4">
-                <FaCalendarAlt className="text-2xl text-info" />
+
+          {/* Active Tasks */}
+          <div className="card bg-base-100 border border-base-content/10 hover:border-info/30 transition-all duration-300 group">
+            <div className="card-body p-4 sm:p-6">
+              <div className="flex items-center justify-between">
+                <div className="min-w-0 flex-1">
+                  <p className="text-base-content/70 text-xs sm:text-sm font-medium mb-1 truncate">
+                    Active Tasks
+                  </p>
+                  <h3 className="text-2xl sm:text-3xl xl:text-4xl font-bold text-info truncate">
+                    {stats.activeTasks}
+                  </h3>
+                </div>
+                <div className="bg-info/10 p-3 rounded-box group-hover:scale-110 transition-transform flex-shrink-0 ml-3">
+                  <FaCalendarAlt className="text-xl sm:text-2xl xl:text-3xl text-info" />
+                </div>
               </div>
-              <div>
-                <p className="text-2xl font-bold">
-                  {tasks.filter(task => new Date(task.completion_date) > new Date()).length}
+              <div className="mt-3 sm:mt-4 pt-3 sm:pt-4 border-t border-base-content/10">
+                <p className="text-xs sm:text-sm text-base-content/60 truncate">
+                  Currently ongoing
                 </p>
-                <p className="text-sm text-base-content/70">Active Tasks</p>
               </div>
             </div>
           </div>
         </div>
 
         {/* Tasks Table */}
-        <div className="bg-base-100/90 backdrop-blur-sm rounded-xl  overflow-hidden border border-base-content/10">
-          <div className="overflow-x-auto">
-            <table className="table w-full">
-              <thead className="bg-gradient-to-r from-primary to-secondary text-white">
-                <tr>
-                  <th className="">Task</th>
-                  <th>Workers</th>
-                  <th>Payment</th>
-                  <th>Deadline</th>
-                  <th className="">Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {tasks.map((task, idx) => (
-                  <tr key={task._id} className="hover:bg-base-200/50 border-b border-base-content/10">
-                    <td>
-                      <div className="flex items-center space-x-4">
-                        <div className="avatar">
-                          <div className="w-14 h-14 rounded-xl">
-                            <img 
-                              src={task.task_image_url} 
-                              alt={task.task_title}
-                              className="object-cover w-full h-full"
-                            />
-                          </div>
-                        </div>
-                        <div>
-                          <div className="font-bold text-base-content">{task.task_title}</div>
-                          <div className="text-sm text-base-content/70 line-clamp-1">{task.task_detail}</div>
-                        </div>
-                      </div>
-                    </td>
-                    <td>
-                      <div className="flex items-center">
-                        <FaUsers className="text-info mr-2" />
-                        <span className="font-semibold">{task.required_workers}</span>
-                      </div>
-                    </td>
-                    <td>
-                      <div className="flex items-center">
-                        <FaCoins className="text-warning mr-2" />
-                        <span className="font-semibold">{task.payable_amount}</span>
-                        <span className="text-sm text-base-content/70 ml-1">/worker</span>
-                      </div>
-                    </td>
-                    <td>
-                      <div className="flex items-center">
-                        <FaCalendarAlt className="text-error mr-2" />
-                        <span className={new Date(task.completion_date) < new Date() ? 'text-error' : ''}>
-                          {new Date(task.completion_date).toLocaleDateString()}
-                        </span>
-                      </div>
-                    </td>
-                    <td>
-                      <div className="flex space-x-2">
-                        <button
-                          className="btn btn-sm btn-ghost btn-circle text-info hover:text-info/80 hover:bg-info/20"
-                          onClick={() => openViewModal(task)}
-                          title="View Task"
-                        >
-                          <FaEye className="text-lg" />
-                        </button>
-                        <button
-                          className="btn btn-sm btn-ghost btn-circle text-warning hover:text-warning/80 hover:bg-warning/20"
-                          onClick={() => openEditModal(task)}
-                          title="Edit Task"
-                        >
-                          <FaEdit className="text-lg" />
-                        </button>
-                        <button
-                          className="btn btn-sm btn-ghost btn-circle text-error hover:text-error/80 hover:bg-error/20"
-                          onClick={() => deleteTaskMutation.mutate(task._id)}
-                          title="Delete Task"
-                        >
-                          <FaTrash className="text-lg" />
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-            
-            {tasks.length === 0 && (
-              <div className="text-center py-12">
-                <div className="bg-base-200/50 rounded-2xl p-8 max-w-md mx-auto">
-                  <div className="bg-primary/20 p-4 rounded-2xl inline-block mb-4">
-                    <FaImage className="text-4xl text-primary" />
+        <div className="card bg-base-100 border border-base-content/10">
+          <div className="card-body p-0">
+            {/* Table Header */}
+            <div className="bg-gradient-to-r from-primary to-secondary px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
+              <h3 className="text-xl sm:text-2xl font-bold text-primary-content">All Tasks</h3>
+              <p className="text-primary-content/80 text-sm sm:text-base mt-1">
+                View, edit and manage your tasks
+              </p>
+            </div>
+
+            <div className="overflow-x-auto">
+              {tasks.length === 0 ? (
+                <div className="text-center py-12 lg:py-16 px-4">
+                  <div className="inline-block p-6 bg-base-200 rounded-box mb-4">
+                    <FaImage className="text-4xl lg:text-6xl text-base-content/40 mx-auto" />
                   </div>
-                  <h3 className="text-xl font-semibold text-base-content mb-2">No tasks yet</h3>
-                  <p className="text-base-content/70 mb-4">You haven't created any tasks yet. Create your first task to get started!</p>
+                  <h4 className="text-xl sm:text-2xl font-semibold text-base-content mb-3">
+                    No tasks yet
+                  </h4>
+                  <p className="text-base-content/60 text-sm sm:text-base max-w-md mx-auto">
+                    You haven't created any tasks yet. Create your first task to get started!
+                  </p>
                 </div>
-              </div>
-            )}
+              ) : (
+                <table className="table table-zebra w-full">
+                  <thead>
+                    <tr className="bg-base-200">
+                      <th className="px-4 sm:px-6 lg:px-8 py-3 sm:py-4 text-left text-sm font-semibold text-base-content whitespace-nowrap">
+                        Task Details
+                      </th>
+                      <th className="px-4 sm:px-6 lg:px-8 py-3 sm:py-4 text-left text-sm font-semibold text-base-content whitespace-nowrap">
+                        Workers
+                      </th>
+                      <th className="px-4 sm:px-6 lg:px-8 py-3 sm:py-4 text-left text-sm font-semibold text-base-content whitespace-nowrap">
+                        Payment
+                      </th>
+                      <th className="px-4 sm:px-6 lg:px-8 py-3 sm:py-4 text-left text-sm font-semibold text-base-content whitespace-nowrap">
+                        Deadline
+                      </th>
+                      <th className="px-4 sm:px-6 lg:px-8 py-3 sm:py-4 text-center text-sm font-semibold text-base-content whitespace-nowrap">
+                        Actions
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {tasks.map((task) => {
+                      const isExpired = new Date(task.completion_date) < new Date();
+
+                      return (
+                        <tr key={task._id} className="hover:bg-base-200/50 transition-colors duration-150">
+                          <td className="px-4 sm:px-6 lg:px-8 py-3 sm:py-4">
+                            <div className="flex items-center gap-3 sm:gap-4">
+                              <div className="flex-shrink-0">
+                                <img
+                                  src={task.task_image_url}
+                                  alt={task.task_title}
+                                  className="w-12 h-12 sm:w-16 sm:h-16 rounded-box object-cover border-2 border-base-200"
+                                />
+                              </div>
+                              <div className="min-w-0 flex-1">
+                                <p className="font-semibold text-base-content text-sm sm:text-base mb-1 truncate">
+                                  {task.task_title}
+                                </p>
+                                <p className="text-xs sm:text-sm text-base-content/60 line-clamp-1">
+                                  {task.task_detail}
+                                </p>
+                              </div>
+                            </div>
+                          </td>
+                          <td className="px-4 sm:px-6 lg:px-8 py-3 sm:py-4">
+                            <div className="flex items-center gap-2">
+                              <div className="bg-secondary/10 p-2 rounded-box">
+                                <FaUsers className="text-secondary text-sm sm:text-base" />
+                              </div>
+                              <span className="font-semibold text-base-content text-sm sm:text-base">
+                                {task.required_workers}
+                              </span>
+                            </div>
+                          </td>
+                          <td className="px-4 sm:px-6 lg:px-8 py-3 sm:py-4">
+                            <div className="flex items-center gap-2">
+                              <div className="bg-accent/10 p-2 rounded-box">
+                                <FaCoins className="text-accent text-sm sm:text-base" />
+                              </div>
+                              <div>
+                                <p className="font-semibold text-base-content text-sm sm:text-base">
+                                  {task.payable_amount}
+                                </p>
+                                <p className="text-xs text-base-content/60">
+                                  per worker
+                                </p>
+                              </div>
+                            </div>
+                          </td>
+                          <td className="px-4 sm:px-6 lg:px-8 py-3 sm:py-4">
+                            <div className="flex items-center gap-2">
+                              <div className={`p-2 rounded-box ${
+                                isExpired ? "bg-error/10" : "bg-info/10"
+                              }`}>
+                                <FaCalendarAlt className={
+                                  isExpired ? "text-error" : "text-info"
+                                } />
+                              </div>
+                              <div>
+                                <p className={`font-semibold text-xs sm:text-sm ${
+                                  isExpired ? "text-error" : "text-base-content"
+                                }`}>
+                                  {new Date(task.completion_date).toLocaleDateString()}
+                                </p>
+                                {isExpired && (
+                                  <span className="text-xs text-error font-medium">
+                                    Expired
+                                  </span>
+                                )}
+                              </div>
+                            </div>
+                          </td>
+                          <td className="px-4 sm:px-6 lg:px-8 py-3 sm:py-4">
+                            <div className="flex gap-1 sm:gap-2 justify-center">
+                              <button
+                                className="btn btn-primary btn-sm sm:btn-md"
+                                onClick={() => openViewModal(task)}
+                                title="View Details"
+                              >
+                                <FaEye className="text-xs sm:text-sm" />
+                              </button>
+                              <button
+                                className="btn btn-warning btn-sm sm:btn-md"
+                                onClick={() => openEditModal(task)}
+                                title="Edit Task"
+                              >
+                                <FaEdit className="text-xs sm:text-sm" />
+                              </button>
+                              <button
+                                className="btn btn-error btn-sm sm:btn-md"
+                                onClick={() => deleteTaskMutation.mutate(task._id)}
+                                disabled={deleteTaskMutation.isPending}
+                                title="Delete Task"
+                              >
+                                {deleteTaskMutation.isPending ? (
+                                  <FaSpinner className="text-xs sm:text-sm animate-spin" />
+                                ) : (
+                                  <FaTrash className="text-xs sm:text-sm" />
+                                )}
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              )}
+            </div>
           </div>
         </div>
       </div>
 
       {/* Edit Modal */}
-      {isEditModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4">
-          <div
-            className="bg-base-100 rounded-3xl shadow-2xl w-full max-w-2xl overflow-hidden border border-base-content/10"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="bg-gradient-to-r from-primary to-secondary p-6 text-white">
-              <h3 className="text-2xl font-bold">Update Task</h3>
-              <p className="text-primary-content/80">Edit your task details</p>
+      <dialog className={`modal ${isEditModalOpen ? 'modal-open' : ''}`}>
+        <div className="modal-box bg-base-100 p-0 max-w-2xl w-[95%] mx-auto border border-base-content/10">
+          <div className="bg-gradient-to-r from-warning to-warning/80 p-6 lg:p-8 text-warning-content">
+            <div className="flex items-center gap-3 mb-2">
+              <div className="bg-warning-content/20 p-3 rounded-box backdrop-blur-sm">
+                <FaEdit className="text-xl lg:text-2xl" />
+              </div>
+              <div>
+                <h3 className="text-2xl lg:text-3xl font-bold">Update Task</h3>
+                <p className="text-warning-content/80 text-sm lg:text-base mt-1">Edit your task details</p>
+              </div>
             </div>
-            
-            <form onSubmit={handleUpdate} className="p-6 space-y-6">
-              <div className="space-y-2">
-                <label className="block text-sm font-semibold text-base-content">Title</label>
-                <input
-                  type="text"
-                  value={formData.title}
-                  onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                  className="w-full px-4 py-3 border rounded-xl bg-base-200/50 focus:ring-2 focus:ring-primary/20 focus:border-primary"
-                  required
-                />
-              </div>
-
-              <div className="space-y-2">
-                <label className="block text-sm font-semibold text-base-content">Task Details</label>
-                <textarea
-                  rows="4"
-                  value={formData.description}
-                  onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                  className="w-full px-4 py-3 border rounded-xl bg-base-200/50 focus:ring-2 focus:ring-primary/20 focus:border-primary"
-                  required
-                ></textarea>
-              </div>
-
-              <div className="space-y-2">
-                <label className="block text-sm font-semibold text-base-content">Submission Instructions</label>
-                <textarea
-                  rows="3"
-                  value={formData.submission_details}
-                  onChange={(e) => setFormData({ ...formData, submission_details: e.target.value })}
-                  className="w-full px-4 py-3 border rounded-xl bg-base-200/50 focus:ring-2 focus:ring-primary/20 focus:border-primary"
-                  required
-                ></textarea>
-              </div>
-
-              <div className="flex justify-end gap-3 pt-4">
-                <button
-                  type="button"
-                  className="btn btn-ghost"
-                  onClick={() => setIsEditModalOpen(false)}
-                >
-                  Cancel
-                </button>
-                <button type="submit" className="btn btn-primary">
-                  Update Task
-                </button>
-              </div>
-            </form>
           </div>
+
+          <form onSubmit={handleUpdate} className="p-6 lg:p-8 space-y-4 lg:space-y-6">
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text font-semibold text-base-content">Task Title</span>
+              </label>
+              <input
+                type="text"
+                value={formData.title}
+                onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                className="input input-bordered w-full focus:input-primary"
+                placeholder="Enter task title"
+                required
+              />
+            </div>
+
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text font-semibold text-base-content">Task Details</span>
+              </label>
+              <textarea
+                rows="4"
+                value={formData.description}
+                onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                className="textarea textarea-bordered w-full focus:textarea-primary resize-none"
+                placeholder="Describe your task in detail"
+                required
+              ></textarea>
+            </div>
+
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text font-semibold text-base-content">Submission Instructions</span>
+              </label>
+              <textarea
+                rows="3"
+                value={formData.submission_details}
+                onChange={(e) => setFormData({ ...formData, submission_details: e.target.value })}
+                className="textarea textarea-bordered w-full focus:textarea-primary resize-none"
+                placeholder="How should workers submit their work?"
+                required
+              ></textarea>
+            </div>
+
+            <div className="modal-action">
+              <button type="button" className="btn btn-ghost" onClick={closeAllModals}>
+                Cancel
+              </button>
+              <button type="submit" className="btn btn-warning">
+                Update Task
+              </button>
+            </div>
+          </form>
         </div>
-      )}
+        <form method="dialog" className="modal-backdrop">
+          <button onClick={closeAllModals}>close</button>
+        </form>
+      </dialog>
 
       {/* View Modal */}
-      {isViewModalOpen && selectedTask && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4">
-          <div
-            className="bg-base-100 rounded-3xl shadow-2xl w-full max-w-2xl overflow-hidden border border-base-content/10"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="bg-gradient-to-r from-primary to-secondary p-6 text-white">
-              <h3 className="text-2xl font-bold">Task Details</h3>
-              <p className="text-primary-content/80">View your task information</p>
-            </div>
-            
-            <div className="p-6 space-y-6">
-              <div className="flex justify-center">
-                <img 
-                  src={selectedTask.task_image_url} 
-                  alt={selectedTask.task_title}
-                  className="w-full h-64 object-cover rounded-2xl"
-                />
+      <dialog className={`modal ${isViewModalOpen ? 'modal-open' : ''}`}>
+        <div className="modal-box bg-base-100 p-0 max-w-3xl w-[95%] mx-auto border border-base-content/10 max-h-[90vh] overflow-y-auto">
+          <div className="bg-gradient-to-r from-primary to-primary/80 p-6 lg:p-8 text-primary-content">
+            <div className="flex items-center gap-3 mb-2">
+              <div className="bg-primary-content/20 p-3 rounded-box backdrop-blur-sm">
+                <FaEye className="text-xl lg:text-2xl" />
               </div>
-              
-              <div className="grid grid-cols-2 gap-4">
-                <div className="bg-base-200/50 p-4 rounded-xl">
-                  <p className="text-sm text-base-content/70">Task Title</p>
-                  <p className="font-semibold">{selectedTask.task_title}</p>
-                </div>
-                
-                <div className="bg-base-200/50 p-4 rounded-xl">
-                  <p className="text-sm text-base-content/70">Workers Required</p>
-                  <p className="font-semibold">{selectedTask.required_workers}</p>
-                </div>
-                
-                <div className="bg-base-200/50 p-4 rounded-xl">
-                  <p className="text-sm text-base-content/70">Payment per Worker</p>
-                  <p className="font-semibold">{selectedTask.payable_amount} coins</p>
-                </div>
-                
-                <div className="bg-base-200/50 p-4 rounded-xl">
-                  <p className="text-sm text-base-content/70">Deadline</p>
-                  <p className="font-semibold">{new Date(selectedTask.completion_date).toLocaleDateString()}</p>
-                </div>
-              </div>
-              
-              <div className="space-y-2">
-                <label className="block text-sm font-semibold text-base-content">Task Details</label>
-                <div className="bg-base-200/50 p-4 rounded-xl">
-                  <p className="whitespace-pre-wrap">{selectedTask.task_detail}</p>
-                </div>
-              </div>
-              
-              <div className="space-y-2">
-                <label className="block text-sm font-semibold text-base-content">Submission Instructions</label>
-                <div className="bg-base-200/50 p-4 rounded-xl">
-                  <p className="whitespace-pre-wrap">{selectedTask.submission_info}</p>
-                </div>
-              </div>
-
-              <div className="flex justify-end pt-4">
-                <button
-                  className="btn btn-primary"
-                  onClick={() => setIsViewModalOpen(false)}
-                >
-                  Close
-                </button>
+              <div>
+                <h3 className="text-2xl lg:text-3xl font-bold">Task Details</h3>
+                <p className="text-primary-content/80 text-sm lg:text-base mt-1">
+                  View complete task information
+                </p>
               </div>
             </div>
           </div>
+
+          <div className="p-6 lg:p-8 space-y-4 lg:space-y-6">
+            {/* Task Image */}
+            <div className="relative">
+              <img
+                src={selectedTask?.task_image_url}
+                alt={selectedTask?.task_title}
+                className="w-full h-48 lg:h-72 object-cover rounded-box border-2 border-base-200"
+              />
+            </div>
+
+            {/* Info Grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 lg:gap-4">
+              <div className="card bg-primary/5 border border-primary/20">
+                <div className="card-body p-3 lg:p-5">
+                  <p className="text-sm text-primary font-semibold mb-2 flex items-center gap-2">
+                    <FaImage /> Task Title
+                  </p>
+                  <p className="font-semibold text-base-content text-base lg:text-lg">
+                    {selectedTask?.task_title}
+                  </p>
+                </div>
+              </div>
+
+              <div className="card bg-secondary/5 border border-secondary/20">
+                <div className="card-body p-3 lg:p-5">
+                  <p className="text-sm text-secondary font-semibold mb-2 flex items-center gap-2">
+                    <FaUsers /> Workers Required
+                  </p>
+                  <p className="font-semibold text-base-content text-base lg:text-lg">
+                    {selectedTask?.required_workers}
+                  </p>
+                </div>
+              </div>
+
+              <div className="card bg-accent/5 border border-accent/20">
+                <div className="card-body p-3 lg:p-5">
+                  <p className="text-sm text-accent font-semibold mb-2 flex items-center gap-2">
+                    <FaCoins /> Payment per Worker
+                  </p>
+                  <p className="font-semibold text-base-content text-base lg:text-lg">
+                    {selectedTask?.payable_amount} coins
+                  </p>
+                </div>
+              </div>
+
+              <div className="card bg-info/5 border border-info/20">
+                <div className="card-body p-3 lg:p-5">
+                  <p className="text-sm text-info font-semibold mb-2 flex items-center gap-2">
+                    <FaCalendarAlt /> Deadline
+                  </p>
+                  <p className="font-semibold text-base-content text-base lg:text-lg">
+                    {selectedTask && new Date(selectedTask.completion_date).toLocaleDateString()}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Task Details */}
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text font-semibold text-base-content flex items-center gap-2">
+                  📝 Task Details
+                </span>
+              </label>
+              <div className="bg-base-200 p-4 rounded-box border border-base-content/10">
+                <p className="text-base-content leading-relaxed whitespace-pre-wrap">
+                  {selectedTask?.task_detail}
+                </p>
+              </div>
+            </div>
+
+            {/* Submission Instructions */}
+            <div className="form-control">
+              <label className="label">
+                <span className="label-text font-semibold text-base-content flex items-center gap-2">
+                  📋 Submission Instructions
+                </span>
+              </label>
+              <div className="bg-base-200 p-4 rounded-box border border-base-content/10">
+                <p className="text-base-content leading-relaxed whitespace-pre-wrap">
+                  {selectedTask?.submission_info}
+                </p>
+              </div>
+            </div>
+
+            {/* Action Buttons */}
+            <div className="modal-action">
+              <button
+                className="btn btn-warning flex-1"
+                onClick={() => {
+                  setIsViewModalOpen(false);
+                  openEditModal(selectedTask);
+                }}
+              >
+                <FaEdit /> Edit Task
+              </button>
+              <button className="btn btn-ghost" onClick={closeAllModals}>
+                Close
+              </button>
+            </div>
+          </div>
         </div>
-      )}
+        <form method="dialog" className="modal-backdrop">
+          <button onClick={closeAllModals}>close</button>
+        </form>
+      </dialog>
     </div>
   );
 };

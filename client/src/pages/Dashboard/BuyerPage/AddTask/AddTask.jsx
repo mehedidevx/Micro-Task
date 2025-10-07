@@ -119,8 +119,8 @@ const AddTask = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-base-200 via-base-100 to-base-100 py-8 px-4">
-      <div className="max-w-5xl mx-auto bg-base-100/90 backdrop-blur-sm rounded-3xl shadow-2xl overflow-hidden border border-base-content/10 p-8">
+    <div className="min-h-screen ">
+      <div className="max-w-5xl mx-auto bg-base-100/90 backdrop-blur-sm rounded-3xl  overflow-hidden border border-base-content/10 p-8">
         
         {/* Header */}
         <div className="text-center mb-8">

@@ -199,14 +199,14 @@ const MySubmission = () => {
 
         {/* Filter Section */}
         <motion.div
-          className="bg-base-100/80 backdrop-blur-xl rounded-3xl p-6 shadow-xl border border-base-300/20 mb-8"
+          className="bg-base-100/80 backdrop-blur-xl rounded-3xl p-6 border border-base-content/10 mb-8"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.4 }}
         >
-          <div className="grid md:grid-cols-2 gap-4">
+          <div className="grid lg:flex lg:justify-between md:grid-cols-2 gap-4">
             {/* Search */}
-            <div className="form-control">
+            <div className="form-control w-full grid gap-1">
               <label className="label">
                 <span className="label-text font-semibold flex items-center gap-2">
                   <FaSearch className="w-4 h-4 text-primary" />
@@ -223,7 +223,8 @@ const MySubmission = () => {
             </div>
 
             {/* Status Filter */}
-            <div className="form-control">
+           <div className="w-full flex items-end justify-end">
+             <div className="form-control  content-start w-full grid gap-1">
               <label className="label">
                 <span className="label-text font-semibold flex items-center gap-2">
                   <FaFilter className="w-4 h-4 text-primary" />
@@ -241,6 +242,7 @@ const MySubmission = () => {
                 <option value="rejected">Rejected</option>
               </select>
             </div>
+           </div>
           </div>
         </motion.div>
 
@@ -261,14 +263,14 @@ const MySubmission = () => {
             </p>
           </motion.div>
         ) : (
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+          <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 mb-8">
             {filteredSubmissions.map((submission, index) => {
               const statusConfig = getStatusConfig(submission.status);
               
               return (
                 <motion.div
                   key={submission._id}
-                  className="bg-gradient-to-br from-base-100 to-base-200/50 backdrop-blur-xl rounded-3xl shadow-xl border border-base-300/20 overflow-hidden hover:shadow-2xl transition-all duration-300 hover:scale-[1.02]"
+                  className="bg-gradient-to-br from-base-100 to-base-200/50 backdrop-blur-xl rounded-3xl border border-base-content/10 overflow-hidden  transition-all duration-300 hover:scale-[1.02]"
                   initial={{ opacity: 0, y: 30 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: index * 0.1 }}

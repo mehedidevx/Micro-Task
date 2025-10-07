@@ -1,47 +1,34 @@
 import React, { useState, useRef, useEffect } from "react";
-import { FaBell } from "react-icons/fa";
-import useUserRole from "../../hooks/useUserRole";
-import useAxios from "../../hooks/useAxios";
-import { useQuery } from "@tanstack/react-query";
-import { useNavigate } from "react-router-dom";
-import useAuth from "../../hooks/useAuth";
-import Loading from "../Loading/Loading";
+import { Bell, Coins, Clipboard, AlertCircle } from "lucide-react";
 
 const NotificationDropdown = () => {
   const [showDropdown, setShowDropdown] = useState(false);
+  const [selectedRole, setSelectedRole] = useState("Worker");
   const bellRef = useRef();
-  const { role } = useUserRole(); // 'Buyer', 'Worker', 'Admin'
-  const axiosSecure = useAxios();
-  const { user } = useAuth();
-  const navigate = useNavigate();
 
-  // Get notifications for Worker
-  const { data: notifications = [], isLoading: workerLoading } = useQuery({
-    queryKey: ["workerNotifications", user?.email],
-    enabled: role === "Worker" && !!user?.email,
-    queryFn: async () => {
-      const res = await axiosSecure.get(`/notifications?worker_email=${user.email}`);
-      return res.data;
-    },
-  });
+  // Demo data
+  const workerNotifications = [
+    { id: 1, coin: 50, buyerName: "John Doe", title: "Website Design", read: false },
+    { id: 2, coin: 30, buyerName: "Jane Smith", title: "Logo Creation", read: false },
+    { id: 3, coin: 75, buyerName: "Mike Wilson", title: "App Development", read: true },
+  ];
 
-  // Get notifications (submissions) for Buyer
-  const { data: BuyerNotifications = [], isLoading: buyerLoading } = useQuery({
-    queryKey: ["BuyerNotifications", user?.email],
-    enabled: role === "Buyer" && !!user?.email,
-    queryFn: async () => {
-      const res = await axiosSecure.get(`/submissions?buyer_email=${user.email}`);
-      return res.data;
-    },
-  });
-   const {submissions} = BuyerNotifications;
-   console.log(submissions)
-  const staticNotifications = {
-    Buyer: ["A worker submitted a task.", "Task review pending."],
-    Admin: ["New withdrawal request.", "User reported an issue."],
-  };
+  const buyerSubmissions = [
+    { id: 1, worker_name: "Ahmed Ali", task_title: "Mobile App UI Design" },
+    { id: 2, worker_name: "Sara Khan", task_title: "Content Writing" },
+  ];
 
-  // Close dropdown on outside click
+  const adminNotifications = [
+    { icon: <Coins size={18} />, message: "New withdrawal request.", type: "info" },
+    { icon: <AlertCircle size={18} />, message: "User reported an issue.", type: "warning" }
+  ];
+
+  const unreadCount = selectedRole === "Worker" 
+    ? workerNotifications.filter(n => !n.read).length 
+    : selectedRole === "Buyer" 
+    ? buyerSubmissions.length 
+    : 2;
+
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (bellRef.current && !bellRef.current.contains(event.target)) {
@@ -52,80 +39,116 @@ const NotificationDropdown = () => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  // Handle click on notification
-  const handleNotificationClick = (notification) => {
-    if (notification?.actionRoute) {
-      navigate(notification.actionRoute);
-    }
-    setShowDropdown(false);
-  };
-
   return (
     <div className="relative" ref={bellRef}>
-      <FaBell
-        className="text-xl cursor-pointer"
-        title="Notifications"
+      {/* Bell Icon with Badge */}
+      <button
+        className="relative btn btn-ghost btn-circle hover:bg-base-200 transition-all duration-200"
         onClick={() => setShowDropdown(!showDropdown)}
-      />
+      >
+        <Bell className="w-5 h-5 text-base-content" />
+        {unreadCount > 0 && (
+          <span className="absolute -top-1 -right-1 bg-primary text-primary-content text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center shadow-lg animate-pulse">
+            {unreadCount > 9 ? '9+' : unreadCount}
+          </span>
+        )}
+      </button>
+
+      {/* Dropdown Menu */}
       {showDropdown && (
-        <div className="absolute right-0 mt-4 w-72 bg-[#1b756c] shadow-lg rounded-lg z-50 max-h-96 overflow-auto">
-          <div className="p-4 font-bold border-b text-white">Notifications</div>
+        <div className="absolute right-0 mt-3 w-80 bg-base-100 shadow-2xl rounded-box z-50 border border-base-300 overflow-hidden">
+          {/* Header */}
+          <div className="px-5 py-4 bg-gradient-to-r from-primary to-secondary border-b border-base-300">
+            <div className="flex items-center justify-between">
+              <h3 className="text-lg font-bold text-base-100">Notifications</h3>
+              {unreadCount > 0 && (
+                <span className="bg-base-100/20 backdrop-blur-sm text-base-100 text-xs font-semibold px-3 py-1 rounded-full">
+                  {unreadCount} new
+                </span>
+              )}
+            </div>
+          </div>
 
-          {/* Worker Notifications */}
-          {role === "Worker" ? (
-            workerLoading ? (
-              <Loading />
-            ) : notifications.length > 0 ? (
-              notifications.map((notification, i) => (
-                <div
-                  key={i}
-                  onClick={() => handleNotificationClick(notification)}
-                  className={`px-4 py-2 text-sm border-b cursor-pointer hover:bg-gray-900 ${
-                    notification.read ? "text-gray-400" : "text-white font-semibold"
-                  }`}
-                >
-                  You have earned {notification.coin} coins from {notification?.buyerName} for completing "{notification.title}"
-                </div>
-              ))
-            ) : (
-              <div className="p-4 text-sm text-gray-400">No notifications</div>
-            )
-          ) : role === "Buyer" ? (
-            // Buyer Notifications
-            buyerLoading ? (
-              <Loading />
-            ) : submissions.length > 0 ? (
-              submissions.map((submission, i) => (
-                <div
-
-                  key={i}
-                  onClick={() =>
-                    handleNotificationClick({
-                      actionRoute: `/dashboard`,
-                    })
-                  }
-                  className="px-4 py-2 text-sm border-b cursor-pointer hover:bg-gray-900 text-white"
-                >
-                  {submission.worker_name} submitted work on "{submission.task_title}"
-                  
-                </div>
-              ))
-            ) : (
-              <div className="p-4 text-sm text-gray-400">No notifications</div>
-            )
-          ) : staticNotifications[role]?.length > 0 ? (
-            // Admin static notifications
-            staticNotifications[role].map((msg, i) => (
+          {/* Notifications List */}
+          <div className="max-h-96 overflow-y-auto">
+            {selectedRole === "Worker" && workerNotifications.map((notification, i) => (
               <div
                 key={i}
-                className="px-4 py-2 text-sm border-b hover:bg-gray-900 text-white"
+                className={`px-5 py-4 border-b border-base-300 cursor-pointer transition-all duration-200 hover:bg-base-200 ${
+                  !notification.read ? "bg-primary/10" : ""
+                }`}
               >
-                {msg}
+                <div className="flex items-start gap-3">
+                  <div className={`mt-1 p-2 rounded-full ${notification.read ? 'bg-base-300' : 'bg-success/20'}`}>
+                    <Coins className={`w-5 h-5 ${notification.read ? 'text-base-content/50' : 'text-success'}`} />
+                  </div>
+                  <div className="flex-1">
+                    <p className={`text-sm leading-relaxed ${
+                      notification.read ? "text-base-content/70" : "text-base-content font-semibold"
+                    }`}>
+                      You earned <span className="font-bold text-primary">{notification.coin} coins</span> from{" "}
+                      <span className="font-medium">{notification.buyerName}</span> for completing{" "}
+                      <span className="italic">"{notification.title}"</span>
+                    </p>
+                    {!notification.read && (
+                      <span className="inline-block mt-2 text-xs text-primary font-medium">
+                        • New
+                      </span>
+                    )}
+                  </div>
+                </div>
               </div>
-            ))
-          ) : (
-            <div className="p-4 text-sm text-gray-400">No notifications</div>
-          )}
+            ))}
+
+            {selectedRole === "Buyer" && buyerSubmissions.map((submission, i) => (
+              <div
+                key={i}
+                className="px-5 py-4 border-b border-base-300 cursor-pointer transition-all duration-200 hover:bg-base-200"
+              >
+                <div className="flex items-start gap-3">
+                  <div className="mt-1 p-2 rounded-full bg-info/20">
+                    <Clipboard className="w-5 h-5 text-info" />
+                  </div>
+                  <div className="flex-1">
+                    <p className="text-sm text-base-content font-medium leading-relaxed">
+                      <span className="font-semibold">{submission.worker_name}</span> submitted work on{" "}
+                      <span className="italic text-secondary">"{submission.task_title}"</span>
+                    </p>
+                    <span className="inline-block mt-2 text-xs text-base-content/50">
+                      Click to review →
+                    </span>
+                  </div>
+                </div>
+              </div>
+            ))}
+
+            {selectedRole === "Admin" && adminNotifications.map((notif, i) => (
+              <div
+                key={i}
+                className="px-5 py-4 border-b border-base-300 hover:bg-base-200 transition-all duration-200 cursor-pointer"
+              >
+                <div className="flex items-start gap-3">
+                  <div className={`mt-1 p-2 rounded-full ${
+                    notif.type === 'warning' ? 'bg-warning/20' : 'bg-info/20'
+                  }`}>
+                    <span className={notif.type === 'warning' ? 'text-warning' : 'text-info'}>
+                      {notif.icon}
+                    </span>
+                  </div>
+                  <p className="text-sm text-base-content leading-relaxed flex-1">
+                    {notif.message}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Footer */}
+          <div className="px-5 py-3 bg-base-200 border-t border-base-300">
+            <button className="btn btn-ghost btn-sm w-full text-primary hover:text-primary-focus">
+              View All Notifications
+            </button>
+          </div>
         </div>
       )}
     </div>

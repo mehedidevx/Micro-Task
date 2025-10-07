@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link, NavLink, Outlet, useNavigate } from "react-router-dom";
 import {
   FaBars,
@@ -22,10 +22,12 @@ import { BiStats } from "react-icons/bi";
 import useAuth from "../hooks/useAuth";
 import useUserRole from "../hooks/useUserRole";
 import { useQuery } from "@tanstack/react-query";
-import Footer from "../pages/Home/Footer";
+
 import NotificationDropdown from "../components/NotificationDropdown/NotificationDropdown";
 import useAxios from "../hooks/useAxios";
 import { AiOutlineDashboard } from "react-icons/ai";
+import Footer from "../pages/Shared/Footer/Footer";
+import Loading from "../components/Loading/Loading";
 
 const DashboardLayout = () => {
   const { user, logOut } = useAuth();
@@ -62,28 +64,28 @@ const DashboardLayout = () => {
           gradient: "from-green-500 to-emerald-500",
           icon: FaUser,
           bgColor: "bg-green-50 dark:bg-green-900/20",
-          borderColor: "border-green-200 dark:border-green-700"
+          borderColor: "border-green-200 dark:border-green-700",
         };
       case "Buyer":
         return {
           gradient: "from-blue-500 to-cyan-500",
           icon: FaCoins,
           bgColor: "bg-blue-50 dark:bg-blue-900/20",
-          borderColor: "border-blue-200 dark:border-blue-700"
+          borderColor: "border-blue-200 dark:border-blue-700",
         };
       case "Admin":
         return {
           gradient: "from-purple-500 to-pink-500",
           icon: FaCrown,
           bgColor: "bg-purple-50 dark:bg-purple-900/20",
-          borderColor: "border-purple-200 dark:border-purple-700"
+          borderColor: "border-purple-200 dark:border-purple-700",
         };
       default:
         return {
           gradient: "from-gray-500 to-slate-500",
           icon: FaUser,
           bgColor: "bg-gray-50 dark:bg-gray-900/20",
-          borderColor: "border-gray-200 dark:border-gray-700"
+          borderColor: "border-gray-200 dark:border-gray-700",
         };
     }
   };
@@ -112,12 +114,10 @@ const DashboardLayout = () => {
   return (
     <div className="bg-gradient-to-br from-base-100 via-base-200/30 to-base-100 min-h-screen">
       <div className="flex flex-col min-h-screen">
-        
         {/* Enhanced Navbar */}
-        <header className="sticky top-0 z-50 bg-base-100/90 backdrop-blur-xl border-b border-base-300/50 ">
-          <div className="container mx-auto px-2">
+        <header className="sticky  top-0 z-50 bg-base-100/90 backdrop-blur-xl border-b border-base-300/50 ">
+          <div className="container mx-auto px-4">
             <nav className="flex  items-center justify-between h-20">
-              
               {/* Left Section */}
               <div className="flex items-center gap-4">
                 <label
@@ -126,9 +126,9 @@ const DashboardLayout = () => {
                 >
                   <FaBars className="w-5 h-5" />
                 </label>
-                
-                <Link 
-                  to="/" 
+
+                <Link
+                  to="/"
                   className="flex items-center gap-3 group hover:scale-105 transition-all duration-300"
                 >
                   <div className="relative">
@@ -150,17 +150,20 @@ const DashboardLayout = () => {
 
               {/* Right Section */}
               <div className="flex items-center gap-4">
-                
                 {/* Role & Coins Display */}
                 <div className="hidden sm:flex items-center gap-3">
                   {/* Role Badge */}
-                  <div className={`flex items-center gap-2 px-4 py-2 rounded-full border ${roleConfig.borderColor} ${roleConfig.bgColor} backdrop-blur-sm`}>
-                    <div className={`w-8 h-8 bg-gradient-to-r ${roleConfig.gradient} rounded-full flex items-center justify-center`}>
+                  <div
+                    className={`flex items-center gap-2 px-4 py-2 rounded-full border ${roleConfig.borderColor} ${roleConfig.bgColor} backdrop-blur-sm`}
+                  >
+                    <div
+                      className={`w-8 h-8 bg-gradient-to-r ${roleConfig.gradient} rounded-full flex items-center justify-center`}
+                    >
                       <roleConfig.icon className="w-4 h-4 text-white" />
                     </div>
                     <span className="font-bold text-sm capitalize">{role}</span>
                   </div>
-                  
+
                   {/* Coins Display */}
                   <div className="flex items-center gap-2 bg-gradient-to-r from-warning/20 via-warning/15 to-warning/20 hover:from-warning/30 hover:to-warning/25 px-4 py-2 rounded-full border border-warning/30 hover:border-warning/50 transition-all duration-300 hover:scale-105 hover:shadow-lg">
                     <FaCoins className="w-5 h-5 text-warning animate-bounce" />
@@ -190,7 +193,7 @@ const DashboardLayout = () => {
                       />
                     </div>
                   </label>
-                  
+
                   <ul
                     tabIndex={0}
                     className="dropdown-content menu p-0 shadow-2xl bg-base-100/95 backdrop-blur-xl rounded-3xl w-80 border border-base-300/50 mt-4 overflow-hidden"
@@ -213,10 +216,14 @@ const DashboardLayout = () => {
                             {user?.email}
                           </p>
                           <div className="flex items-center gap-2 mt-2">
-                            <div className={`w-6 h-6 bg-gradient-to-r ${roleConfig.gradient} rounded-full flex items-center justify-center`}>
+                            <div
+                              className={`w-6 h-6 bg-gradient-to-r ${roleConfig.gradient} rounded-full flex items-center justify-center`}
+                            >
                               <roleConfig.icon className="w-3 h-3 text-white" />
                             </div>
-                            <span className="text-sm font-semibold capitalize">{role}</span>
+                            <span className="text-sm font-semibold capitalize">
+                              {role}
+                            </span>
                             <div className="flex items-center gap-1 ml-2">
                               <FaCoins className="w-3 h-3 text-warning" />
                               <span className="text-sm font-semibold text-warning">
@@ -235,7 +242,9 @@ const DashboardLayout = () => {
                           to="/dashboard/myProfile"
                           className={({ isActive }) =>
                             `flex items-center gap-3 px-4 py-2.5 rounded-xl font-medium transition-all duration-300 hover:bg-primary/10 hover:text-primary hover:shadow-md ${
-                              isActive ? 'bg-primary/20 text-primary' : 'text-base-content/80'
+                              isActive
+                                ? "bg-primary/20 text-primary"
+                                : "text-base-content/80"
                             }`
                           }
                         >
@@ -248,7 +257,9 @@ const DashboardLayout = () => {
                           to="/dashboard"
                           className={({ isActive }) =>
                             `flex items-center gap-3 px-4 py-2.5 rounded-xl font-medium transition-all duration-300 hover:bg-primary/10 hover:text-primary hover:shadow-md ${
-                              isActive ? 'bg-primary/20 text-primary' : 'text-base-content/80'
+                              isActive
+                                ? "bg-primary/20 text-primary"
+                                : "text-base-content/80"
                             }`
                           }
                         >
@@ -275,38 +286,44 @@ const DashboardLayout = () => {
         </header>
 
         {/* Main Content Area */}
-        <div className="drawer flex-1 lg:drawer-open">
+        <div className="drawer container mx-auto flex-1 lg:drawer-open">
           <input
             id="dashboard-drawer"
             type="checkbox"
             className="drawer-toggle"
           />
-          
+
           {/* Main Content */}
           <div className="drawer-content flex flex-col">
-            <main className="flex-1 p-6 lg:p-8 bg-gradient-to-br from-base-100/50 to-base-200/30">
+            <main className="flex-1 p-4 lg:px-8 bg-gradient-to-br from-base-100/50 to-base-200/30">
               <div className="max-w-7xl mx-auto">
                 <Outlet />
               </div>
             </main>
-            
           </div>
 
           {/* Enhanced Sidebar */}
           <div className="drawer-side z-40">
-            <label htmlFor="dashboard-drawer" className="drawer-overlay"></label>
-            
+            <label
+              htmlFor="dashboard-drawer"
+              className="drawer-overlay"
+            ></label>
+
             <aside className="w-80 min-h-full bg-base-100/95 backdrop-blur-xl border-r border-base-300/50">
               {/* Mobile Role & Coins */}
               <div className="p-4 border-b border-base-300/30 lg:hidden">
                 <div className="flex items-center justify-between gap-3">
-                  <div className={`flex items-center gap-2 px-3 py-2 rounded-full border ${roleConfig.borderColor} ${roleConfig.bgColor}`}>
-                    <div className={`w-6 h-6 bg-gradient-to-r ${roleConfig.gradient} rounded-full flex items-center justify-center`}>
+                  <div
+                    className={`flex items-center gap-2 px-3 py-2 rounded-full border ${roleConfig.borderColor} ${roleConfig.bgColor}`}
+                  >
+                    <div
+                      className={`w-6 h-6 bg-gradient-to-r ${roleConfig.gradient} rounded-full flex items-center justify-center`}
+                    >
                       <roleConfig.icon className="w-3 h-3 text-white" />
                     </div>
                     <span className="font-bold text-sm capitalize">{role}</span>
                   </div>
-                  
+
                   <div className="flex items-center gap-2 bg-gradient-to-r from-warning/20 to-warning/10 px-3 py-2 rounded-full">
                     <FaCoins className="w-4 h-4 text-warning" />
                     <span className="font-bold text-warning text-sm">
@@ -317,8 +334,8 @@ const DashboardLayout = () => {
               </div>
 
               {/* Navigation Menu */}
-              <nav className="p-4 ">
-                <ul className="space-y-2 sticky top-0">
+              <nav className="p-4  ">
+                <ul className="space-y-2 sticky top-0 ">
                   {/* Dashboard Home */}
                   <SidebarLink to="/dashboard" icon={AiOutlineDashboard} end>
                     Dashboard Home
@@ -327,11 +344,16 @@ const DashboardLayout = () => {
                   {/* Role-based Navigation */}
                   {!roleLoading && role === "Worker" && (
                     <>
-                      <div className="divider text-xs text-base-content/60 my-6">Worker Tools</div>
+                      <div className="divider text-xs text-base-content/60 my-6">
+                        Worker Tools
+                      </div>
                       <SidebarLink to="/dashboard/taskList" icon={FaTasks}>
                         Available Tasks
                       </SidebarLink>
-                      <SidebarLink to="/dashboard/mySubmissions" icon={FaClipboardCheck}>
+                      <SidebarLink
+                        to="/dashboard/mySubmissions"
+                        icon={FaClipboardCheck}
+                      >
                         My Submissions
                       </SidebarLink>
                       <SidebarLink to="/dashboard/withdrawals" icon={FaWallet}>
@@ -342,7 +364,9 @@ const DashboardLayout = () => {
 
                   {!roleLoading && role === "Buyer" && (
                     <>
-                      <div className="divider text-xs text-base-content/60 my-6">Buyer Tools</div>
+                      <div className="divider text-xs text-base-content/60 my-6">
+                        Buyer Tools
+                      </div>
                       <SidebarLink to="/dashboard/addTask" icon={FaPlus}>
                         Create New Task
                       </SidebarLink>
@@ -352,7 +376,10 @@ const DashboardLayout = () => {
                       <SidebarLink to="/dashboard/purchaseCoin" icon={FaCoins}>
                         Purchase Coins
                       </SidebarLink>
-                      <SidebarLink to="/dashboard/paymentHistory" icon={FaMoneyCheckAlt}>
+                      <SidebarLink
+                        to="/dashboard/paymentHistory"
+                        icon={FaMoneyCheckAlt}
+                      >
                         Payment History
                       </SidebarLink>
                     </>
@@ -360,19 +387,25 @@ const DashboardLayout = () => {
 
                   {!roleLoading && role === "Admin" && (
                     <>
-                      <div className="divider text-xs text-base-content/60 my-6">Admin Panel</div>
-                      <SidebarLink to="/dashboard/manageUsers" icon={FaUserFriends}>
+                      <div className="divider text-xs text-base-content/60 my-6">
+                        Admin Panel
+                      </div>
+                      <SidebarLink
+                        to="/dashboard/manageUsers"
+                        icon={FaUserFriends}
+                      >
                         Manage Users
                       </SidebarLink>
                       <SidebarLink to="/dashboard/manageTasks" icon={FaTasks}>
                         Manage Tasks
                       </SidebarLink>
-                     
                     </>
                   )}
 
                   {/* Common Links */}
-                  <div className="divider text-xs text-base-content/60 my-6">Account</div>
+                  <div className="divider text-xs text-base-content/60 my-6">
+                    Account
+                  </div>
                   <SidebarLink to="/dashboard/myProfile" icon={FaUser}>
                     My Profile
                   </SidebarLink>
@@ -396,9 +429,8 @@ const DashboardLayout = () => {
             </aside>
           </div>
         </div>
-         <Footer />
+        <Footer />
       </div>
-     
     </div>
   );
 };

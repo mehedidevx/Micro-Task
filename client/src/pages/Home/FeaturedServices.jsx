@@ -219,7 +219,7 @@ export default function FeaturedServices() {
 
                   {/* Action Button */}
                   <Link to="/tasks">
-                    <button className="btn border-none btn-primary btn-sm rounded-full w-full hover:btn-secondary transition-all duration-300 hover:scale-105">
+                    <button className="btn  btn-primary btn-sm rounded-full w-full hover:btn-secondary transition-all duration-300 hover:scale-105">
                       Browse Tasks
                       <FaArrowRight className="w-3 h-3 ml-2 group-hover:translate-x-1 transition-transform" />
                     </button>

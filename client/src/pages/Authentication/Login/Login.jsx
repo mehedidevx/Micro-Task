@@ -49,7 +49,7 @@ const Login = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-base-300 via-base-200 to-base-100 flex items-center justify-center p-4">
+    <div className="min-h-screen  flex items-center justify-center p-4">
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-5">
         <div className="absolute inset-0" style={{
@@ -57,8 +57,8 @@ const Login = () => {
         }}/>
       </div>
 
-      <div className="relative z-10 w-full max-w-7xl">
-        <div className="bg-base-100/90 backdrop-blur-sm rounded-3xl shadow-2xl overflow-hidden border border-base-content/10">
+      <div className="relative z-10 w-full container px-4">
+        <div className="bg-base-100 backdrop-blur-sm rounded-3xl  overflow-hidden border border-base-content/10">
           <div className="flex flex-col lg:flex-row">
             
             {/* Left Section - Form */}
@@ -263,7 +263,7 @@ const Login = () => {
                     <div className="flex items-center gap-3">
                       <FaCoins className="w-8 h-8 text-warning animate-bounce" />
                       <div>
-                        <p className="text-2xl font-bold">₹1M+</p>
+                        <p className="text-2xl font-bold">$1M+</p>
                         <p className="text-sm text-primary-content/80">Total Paid</p>
                       </div>
                     </div>

@@ -104,7 +104,7 @@ const Register = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-base-300 via-base-200 to-base-100 flex items-center justify-center p-4 relative">
+    <div className="min-h-screen  flex items-center justify-center p-4 relative">
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-5">
         <div
@@ -115,8 +115,8 @@ const Register = () => {
         />
       </div>
 
-      <div className="relative z-10 w-full max-w-7xl">
-        <div className="bg-base-100/90 backdrop-blur-sm rounded-3xl shadow-2xl overflow-hidden border border-base-content/10">
+      <div className="relative z-10 w-full container px-4">
+        <div className="bg-base-100 backdrop-blur-sm rounded-3xl  overflow-hidden border border-base-content/10">
           <div className="flex flex-col lg:flex-row">
             
             {/* Left Section - Form */}

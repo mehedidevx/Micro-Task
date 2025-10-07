@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { FaPlay, FaArrowRight, FaStar, FaCoins, FaTasks, FaUsers } from 'react-icons/fa';
 import { HiSparkles } from 'react-icons/hi';
 import { AiOutlineDashboard } from 'react-icons/ai';
+import { Link } from 'react-router';
+import useAuth from '../../hooks/useAuth';
 
 const slides = [
   {
@@ -38,6 +40,7 @@ const slides = [
 
 const HeroSection = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const {user} = useAuth();
 
   // Auto-play functionality
   useEffect(() => {
@@ -123,11 +126,13 @@ const HeroSection = () => {
 
                   {/* Action Buttons */}
                   <div className="flex flex-col sm:flex-row gap-4">
+                     <Link to={user ? "/dashboard" : "/login"}>
                     <button className="btn btn-primary btn-lg px-8 hover:btn-secondary rounded-full shadow-2xl hover:shadow-primary/50 transition-all duration-300 hover:scale-105 group">
                       <slide.icon className="w-5 h-5 group-hover:animate-bounce" />
                       {slide.primaryAction}
                       <FaArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />
                     </button>
+                    </Link>
                     
                     <button className="btn btn-outline btn-secondary btn-lg px-8 text-base-100 border-base-100 hover:bg-base-100 hover:text-base-content rounded-full transition-all duration-300 hover:scale-105">
                       <FaPlay className="w-4 h-4" />
@@ -166,7 +171,7 @@ const HeroSection = () => {
                     />
                     <StatCard 
                       icon={FaCoins} 
-                      value="₹50,000+" 
+                      value="$50,000+" 
                       label="Earnings Paid" 
                       color="warning" 
                     />

@@ -186,7 +186,7 @@ const TaskDetails = () => {
             >
               
               {/* Task Image and Basic Info */}
-              <div className="bg-gradient-to-br from-base-100 to-base-200/50 backdrop-blur-xl rounded-3xl shadow-xl border border-base-300/20 overflow-hidden">
+              <div className="bg-gradient-to-br from-base-100 to-base-200/50 backdrop-blur-xl rounded-3xl border border-base-content/10 overflow-hidden">
                 {/* Image Section */}
                 <div className="relative h-80 overflow-hidden">
                   <img
@@ -277,7 +277,7 @@ const TaskDetails = () => {
             >
               
               {/* Task Stats */}
-              <div className="bg-gradient-to-br from-base-100 to-base-200/50 backdrop-blur-xl rounded-3xl shadow-xl border border-base-300/20 p-6">
+              <div className="bg-gradient-to-br from-base-100 to-base-200/50 backdrop-blur-xl rounded-3xl border border-base-content/10 p-6">
                 <h3 className="text-xl font-bold text-base-content mb-6 flex items-center gap-2">
                   <FaShieldAlt className="w-5 h-5 text-primary" />
                   Task Information
@@ -333,7 +333,7 @@ const TaskDetails = () => {
               </div>
 
               {/* Submission Section */}
-              <div className="bg-gradient-to-br from-base-100 to-base-200/50 backdrop-blur-xl rounded-3xl shadow-xl border border-base-300/20 p-6">
+              <div className="bg-gradient-to-br from-base-100 to-base-200/50 backdrop-blur-xl rounded-3xl border border-base-content/10 p-6">
                 {alreadySubmitted ? (
                   <motion.div
                     className="text-center"

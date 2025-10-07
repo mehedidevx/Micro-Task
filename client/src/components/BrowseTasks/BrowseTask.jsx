@@ -14,6 +14,7 @@ import {
 import { HiSparkles } from "react-icons/hi";
 import { Link } from "react-router-dom";
 import useAxios from "../../hooks/useAxios";
+import Loading from "../Loading/Loading";
 
 const BrowseTask = () => {
   const axios = useAxios();
@@ -82,49 +83,15 @@ const BrowseTask = () => {
     );
     return diff;
   };
-
   if (isLoading) {
-    return (
-      <section className="min-h-screen bg-base-200 py-16">
-        <div className="container mx-auto px-4">
-          {/* Header */}
-          <div className="text-center mb-12">
-            <div className="flex items-center justify-center gap-3 mb-6">
-              <div className="w-16 h-16 bg-primary/20 rounded-2xl flex items-center justify-center animate-pulse">
-                <FaTasks className="w-8 h-8 text-primary" />
-              </div>
-              <div>
-                <h1 className="text-4xl lg:text-5xl font-bold text-base-content">
-                  Loading <span className="text-primary">Tasks</span>
-                </h1>
-                <p className="text-base-content/70">
-                  Please wait while we fetch available tasks...
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* Loading Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
-              <div key={i} className="card bg-base-100 shadow-xl animate-pulse">
-                <div className="h-48 bg-base-300 rounded-t-2xl"></div>
-                <div className="card-body">
-                  <div className="h-4 bg-base-300 rounded w-3/4 mb-2"></div>
-                  <div className="h-3 bg-base-300 rounded w-full mb-2"></div>
-                  <div className="h-3 bg-base-300 rounded w-2/3"></div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-    );
+    return(
+      <Loading></Loading>
+    )
   }
 
   if (isError) {
     return (
-      <section className="min-h-screen bg-base-200 py-16">
+      <section className="min-h-screen bg-base-100 py-16">
         <div className="container mx-auto px-4">
           <div className="text-center max-w-md mx-auto">
             <div className="w-20 h-20 bg-error/20 rounded-full flex items-center justify-center mx-auto mb-6">
@@ -192,7 +159,7 @@ const BrowseTask = () => {
         </div>
 
         {/* Search and Filter Section */}
-        <div className="bg-base-100 rounded-3xl  p-6 mb-8">
+        <div className="bg-base-100 rounded-3xl p-6 mb-8 border border-base-content/10">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {/* Search */}
             <div className="relative">
@@ -251,12 +218,12 @@ const BrowseTask = () => {
               return (
                 <div
                   key={task._id}
-                  className="card bg-base-100 border border-base-content/10  transition-all duration-500   group "
+                  className="card bg-base-100 border border-base-content/10 transition-all duration-500 group hover:border-primary/30"
                 >
                   {/* Priority Badge */}
                   <div className="absolute -top-3 -right-3 z-10">
                     <div
-                      className={`badge ${priority.color} badge-lg font-bold shadow-lg`}
+                      className={`badge ${priority.color} badge-lg font-bold border-0`}
                     >
                       {priority.icon} {priority.level}
                     </div>
@@ -265,7 +232,7 @@ const BrowseTask = () => {
                   {/* Urgency Badge */}
                   {daysLeft <= 3 && daysLeft > 0 && (
                     <div className="absolute -top-3 -left-3 z-10">
-                      <div className="badge badge-error badge-lg font-bold shadow-lg animate-pulse">
+                      <div className="badge badge-error badge-lg font-bold border-0 animate-pulse">
                         🚨 Urgent
                       </div>
                     </div>
@@ -276,9 +243,9 @@ const BrowseTask = () => {
                     <img
                       src={task.task_image_url || "/default-task.png"}
                       alt={task.task_title}
-                      className="w-full h-full object-cover transition-transform duration-500 "
+                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 transition-opacity duration-300"></div>
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                   </figure>
 
                   <div className="card-body p-5">
@@ -353,16 +320,15 @@ const BrowseTask = () => {
                     </div>
 
                     {/* Action Buttons */}
-                    <div className="card-actions justify-end">
+                    <div className="card-actions justify-end z-1">
                       <Link
-                      to={`/tasksDetails/${task._id}`}
+                        to={`/tasksDetails/${task._id}`}
                         onClick={(e) => {
                           console.log("Link clicked");
                           console.log("Task ID:", task._id);
                           console.log("Going to:", `/tasksDetails/${task._id}`);
                         }}
-                        
-                        className="btn z-99  btn-primary btn-sm rounded-full px-6 hover:btn-secondary cursor-pointer transition-all duration-300 hover:scale-105"
+                        className="btn btn-primary btn-sm rounded-full px-6 hover:btn-secondary transition-all duration-300 hover:scale-105"
                       >
                         <FaEye className="w-4 h-4" />
                         View Details
@@ -414,13 +380,13 @@ const BrowseTask = () => {
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <Link
                   to="/register"
-                  className="btn btn-primary btn-lg border-none px-8 rounded-full hover:btn-secondary transition-all duration-300 hover:scale-105"
+                  className="btn btn-primary btn-lg px-8 rounded-full hover:btn-secondary transition-all duration-300 hover:scale-105"
                 >
                   <FaUsers className="w-5 h-5" />
                   Join Now
                 </Link>
                 <Link
-                  to="/how-it-works"
+                  to="/about"
                   className="btn btn-outline btn-lg px-8 border border-base-content/10 hover:scale-105 transition-all duration-300"
                 >
                   Learn More
