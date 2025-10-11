@@ -156,24 +156,24 @@ export default function HowItWorks() {
       {/* Tab Selection */}
       <section className="py-8 sticky top-0 z-10 bg-base-100 backdrop-blur-lg  border-base-300">
         <div className="container mx-auto px-4">
-          <div className="flex justify-center">
-            <div className="bg-base-100 rounded-full p-2  inline-flex">
+          <div className="flex  justify-center">
+            <div className="bg-base-100 gap-2 rounded-full p-2  inline-flex">
               <button
                 onClick={() => setActiveTab('worker')}
-                className={`px-8 cursor-pointer py-3 rounded-full font-semibold transition-all duration-300 ${
+                className={`px-5 py-2.5 rounded-lg cursor-pointer  font-semibold transition-all duration-300 ${
                   activeTab === 'worker'
-                    ? 'bg-gradient-to-r from-primary to-secondary text-white '
-                    : 'text-base-content/60 hover:text-base-content'
+                    ? 'bg-primary text-white '
+                    : 'text-base-content/60 hover:text-base-content border border-base-content/10'
                 }`}
               >
                 I'm a Worker
               </button>
               <button
                 onClick={() => setActiveTab('employer')}
-                className={`px-8 cursor-pointer py-3 rounded-full font-semibold transition-all duration-300 ${
+                className={`px-5 py-2.5 rounded-lg  cursor-pointer     font-semibold transition-all duration-300 ${
                   activeTab === 'employer'
-                    ? 'bg-gradient-to-r from-primary to-secondary text-white shadow-lg'
-                    : 'text-base-content/60 hover:text-base-content'
+                    ? 'bg-primary  text-white'
+                    : 'text-base-content/60 hover:text-base-content border border-base-content/10'
                 }`}
               >
                 I'm an Employer

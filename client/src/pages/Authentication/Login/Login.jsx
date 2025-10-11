@@ -27,7 +27,7 @@ const Login = () => {
     
     signIn(data.email, data.password)
       .then(result => {
-        console.log(result.user);
+        const user = result.user;
         toast.success('Welcome back! Login successful!');
         navigate(from, { replace: true });
       })

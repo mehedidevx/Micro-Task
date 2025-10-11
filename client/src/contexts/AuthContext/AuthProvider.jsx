@@ -40,7 +40,7 @@ const AuthProvider = ({ children }) => {
         const unSubscribe = onAuthStateChanged(auth, currentUser => {
             setUser(currentUser);
             setFirebaseUser(currentUser)
-            console.log('user in the auth state change', currentUser)
+            
             setLoading(false);
         });
 

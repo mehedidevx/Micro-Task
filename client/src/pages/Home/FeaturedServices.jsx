@@ -219,7 +219,7 @@ export default function FeaturedServices() {
 
                   {/* Action Button */}
                   <Link to="/tasks">
-                    <button className="btn  btn-primary btn-sm rounded-full w-full hover:btn-secondary transition-all duration-300 hover:scale-105">
+                    <button className="btn  btn-primary btn-sm rounded-full w-full  transition-all duration-300 ">
                       Browse Tasks
                       <FaArrowRight className="w-3 h-3 ml-2 group-hover:translate-x-1 transition-transform" />
                     </button>
@@ -243,11 +243,11 @@ export default function FeaturedServices() {
               </p>
               <div className="flex flex-col sm:flex-row gap-4">
                 <Link to="/tasks">
-                  <button className="btn btn-primary btn-lg px-8 rounded-full   transition-all duration-300 hover:scale-105">
+                  <button className="btn btn-primary btn-lg px-8 rounded-full   transition-all duration-300 ">
                     View All Tasks
                   </button>
                 </Link>
-                <button className="btn  btn-secondary   btn-lg px-8    transition-all duration-300 ">
+                <button className="btn  btn-secondary  btn-lg px-8     transition-all duration-300 ">
                   Request Service
                 </button>
               </div>

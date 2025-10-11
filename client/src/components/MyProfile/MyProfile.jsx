@@ -23,8 +23,7 @@ const MyProfileName = () => {
 
   const handleUpdate = () => {
     // এখানে firebase বা backend call করে update করার কাজ করতে পারো
-    console.log("Name:", name);
-    console.log("Photo:", photo);
+   
     setOpen(false);
   };
 

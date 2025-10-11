@@ -218,7 +218,7 @@ const BrowseTask = () => {
               return (
                 <div
                   key={task._id}
-                  className="card bg-base-100 border border-base-content/10 transition-all duration-500 group hover:border-primary/30"
+                  className="card bg-base-100 border border-base-content/10 transition-all duration-500 group "
                 >
                   {/* Priority Badge */}
                   <div className="absolute -top-3 -right-3 z-10">
@@ -245,7 +245,7 @@ const BrowseTask = () => {
                       alt={task.task_title}
                       className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 transition-opacity duration-300"></div>
                   </figure>
 
                   <div className="card-body p-5">
@@ -323,11 +323,7 @@ const BrowseTask = () => {
                     <div className="card-actions justify-end z-1">
                       <Link
                         to={`/tasksDetails/${task._id}`}
-                        onClick={(e) => {
-                          console.log("Link clicked");
-                          console.log("Task ID:", task._id);
-                          console.log("Going to:", `/tasksDetails/${task._id}`);
-                        }}
+                     
                         className="btn btn-primary btn-sm rounded-full px-6 hover:btn-secondary transition-all duration-300 hover:scale-105"
                       >
                         <FaEye className="w-4 h-4" />
@@ -387,7 +383,7 @@ const BrowseTask = () => {
                 </Link>
                 <Link
                   to="/about"
-                  className="btn btn-outline btn-lg px-8 border border-base-content/10 hover:scale-105 transition-all duration-300"
+                  className="btn btn-outline btn-secondary btn-lg px-8 border border-base-content/10 hover:scale-105 transition-all duration-300"
                 >
                   Learn More
                 </Link>

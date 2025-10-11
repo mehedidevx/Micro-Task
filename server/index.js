@@ -23,7 +23,7 @@ const verifyFBToken = async (req, res, next) => {
     return res.status(401).send({ message: "unauthorized access" });
   }
   const token = authHeader.split(" ")[1];
-  console.log(token);
+ 
   if (!token) {
     return res.status(401).send({ message: "unauthorized access" });
   }

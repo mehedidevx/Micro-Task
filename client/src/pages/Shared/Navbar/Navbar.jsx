@@ -121,7 +121,7 @@ const Navbar = () => {
             {user ? (
               <>
                 {/* Coins Display */}
-                <div className="hidden sm:flex items-center gap-2 bg-gradient-to-r from-primary/20 via-warning/15 to-primary/20 hover:from-warning/30 hover:to-warning/25 px-3 py-1 rounded-full border border-warning/30 hover:border-warning/50 transition-all duration-300 hover:scale-105 hover:shadow-lg">
+                <div className="hidden sm:flex items-center gap-2 bg-gradient-to-r from-primary/20 via-warning/15 to-primary/20 hover:from-warning/30 hover:to-warning/25 px-3 py-1 rounded-full border border-warning/30 hover:border-warning/50 transition-all duration-300  ">
                   <FaCoins className="w-5 h-5 text-warning animate-bounce" />
                   <span className="font-bold text-warning text-lg">
                     {coins.toLocaleString()}
@@ -135,7 +135,7 @@ const Navbar = () => {
                 <div className="dropdown dropdown-end">
                   <label
                     tabIndex={0}
-                    className="btn btn-ghost btn-circle avatar hover:scale-110 transition-all duration-300 hover:shadow-lg"
+                    className="btn btn-ghost btn-circle avatar  transition-all duration-300 hover:shadow-lg"
                   >
                     <div className="w-10 h-10  rounded-full ring-2 ring-primary/30 ring-offset-2 ring-offset-base-100 hover:ring-primary hover:ring-offset-4 transition-all duration-300">
                       <img
@@ -148,7 +148,7 @@ const Navbar = () => {
                   
                   <ul
                     tabIndex={0}
-                    className="dropdown-content menu p-0 shadow-2xl bg-base-100/95 backdrop-blur-xl rounded-3xl w-80 border border-base-300/50 mt-4 overflow-hidden"
+                    className="dropdown-content menu p-0  bg-base-100/95 backdrop-blur-xl rounded-xl w-80 border border-base-300/50 mt-4 overflow-hidden"
                   >
                     {/* Profile Header */}
                     <div className="bg-gradient-to-br from-primary/10 via-secondary/5 to-accent/10 p-6 border-b border-base-300/30">

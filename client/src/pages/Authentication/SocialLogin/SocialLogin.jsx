@@ -18,7 +18,7 @@ const SocialLogin = () => {
       .then(async (result) => {
         const user = result.user;
         navigate(from);
-        console.log(result.user);
+       
         // update userinfo in the database
         // calculate coins
        

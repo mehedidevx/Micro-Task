@@ -1,5 +1,18 @@
 import React, { useState, useEffect } from "react";
-import { FaLinkedin, FaFacebook, FaGithub, FaTwitter, FaInstagram, FaEnvelope, FaPhone, FaMapMarkerAlt, FaCoins, FaTasks, FaUsers, FaArrowUp } from "react-icons/fa";
+import {
+  FaLinkedin,
+  FaFacebook,
+  FaGithub,
+  FaTwitter,
+  FaInstagram,
+  FaEnvelope,
+  FaPhone,
+  FaMapMarkerAlt,
+  FaCoins,
+  FaTasks,
+  FaUsers,
+  FaArrowUp,
+} from "react-icons/fa";
 import { HiSparkles } from "react-icons/hi";
 import { Link } from "react-router-dom";
 
@@ -12,12 +25,12 @@ const Footer = () => {
       setShowScrollTop(window.scrollY > 400);
     };
 
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   return (
@@ -28,19 +41,37 @@ const Footer = () => {
           <div className="flex flex-col items-center text-center max-w-2xl mx-auto">
             <div className="flex items-center justify-center gap-2 mb-4">
               <HiSparkles className="w-6 h-6 text-primary animate-spin" />
-              <h3 className="text-2xl font-bold text-base-content">Stay Updated</h3>
+              <h3 className="text-2xl font-bold text-base-content">
+                Stay Updated
+              </h3>
               <HiSparkles className="w-6 h-6 text-primary animate-spin" />
             </div>
             <p className="text-base-content/70 mb-6">
-              Get the latest updates on new tasks, features, and earning opportunities!
+              Get the latest updates on new tasks, features, and earning
+              opportunities!
             </p>
-            <div className="flex flex-col sm:flex-row gap-3 w-full max-w-md">
-              <input 
-                type="email" 
-                placeholder="Enter your email" 
-                className="input input-bordered flex-1 rounded-full"
-              />
-              <button className="btn btn-primary rounded-full px-8 hover:btn-secondary transition-all duration-300 hover:scale-105">
+            <div className="flex flex-col md:flex-row gap-3 w-full max-w-md">
+              <div className="flex-1 relative">
+                <input
+                  type="email"
+                  placeholder="Enter your email"
+                  className="input input-bordered w-full rounded-xl transition-all duration-300 focus:border-primary focus:ring-2 focus:ring-primary/20 hover:border-primary/50 py-4 pl-4 pr-12"
+                />
+                <svg
+                  className="absolute right-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207"
+                  />
+                </svg>
+              </div>
+              <button className="btn btn-primary rounded-full px-6 xs:px-8 hover:btn-secondary transform hover:scale-105 active:scale-95 transition-all duration-300 shadow-lg hover:shadow-xl min-w-[130px] font-semibold text-white">
                 Subscribe
               </button>
             </div>
@@ -52,7 +83,6 @@ const Footer = () => {
       <footer className="bg-base-200">
         <div className="container mx-auto px-4 py-16">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-6">
-            
             {/* Brand Section */}
             <div className="space-y-6">
               <div className="flex items-center gap-3 group">
@@ -63,13 +93,16 @@ const Footer = () => {
                   <h2 className="text-3xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
                     MicroTask
                   </h2>
-                  <p className="text-xs text-base-content/60 font-medium">Earn & Complete</p>
+                  <p className="text-xs text-base-content/60 font-medium">
+                    Earn & Complete
+                  </p>
                 </div>
               </div>
-              
+
               <p className="text-base-content/70 leading-relaxed">
-                The ultimate micro-task platform connecting skilled workers with exciting opportunities. 
-                Complete tasks, earn coins, and build your digital career with us.
+                The ultimate micro-task platform connecting skilled workers with
+                exciting opportunities. Complete tasks, earn coins, and build
+                your digital career with us.
               </p>
 
               {/* Stats */}
@@ -111,7 +144,7 @@ const Footer = () => {
                   { to: "/dashboard", label: "Dashboard", icon: "📊" },
                   { to: "/about", label: "About Us", icon: "ℹ️" },
                   { to: "/contact", label: "Contact", icon: "📞" },
-                  { to: "/help", label: "Help Center", icon: "❓" }
+                  { to: "/help", label: "Help Center", icon: "❓" },
                 ].map((link, index) => (
                   <li key={index}>
                     <Link
@@ -141,9 +174,12 @@ const Footer = () => {
                   { label: "Social Media Tasks", icon: "📱" },
                   { label: "Research Projects", icon: "🔍" },
                   { label: "Design Tasks", icon: "🎨" },
-                  { label: "Translation Work", icon: "🌐" }
+                  { label: "Translation Work", icon: "🌐" },
                 ].map((service, index) => (
-                  <li key={index} className="flex items-center gap-3 text-base-content/70 hover:text-secondary transition-colors duration-300 cursor-pointer group">
+                  <li
+                    key={index}
+                    className="flex items-center gap-3 text-base-content/70 hover:text-secondary transition-colors duration-300 cursor-pointer group"
+                  >
                     <span className="text-lg group-hover:scale-110 transition-transform duration-300">
                       {service.icon}
                     </span>
@@ -159,7 +195,7 @@ const Footer = () => {
                 <div className="w-2 h-6 bg-accent rounded-full"></div>
                 Get in Touch
               </h3>
-              
+
               {/* Contact Info */}
               <div className="space-y-4">
                 <div className="flex items-center gap-3 text-base-content/70">
@@ -167,17 +203,21 @@ const Footer = () => {
                     <FaEnvelope className="w-4 h-4 text-primary" />
                   </div>
                   <div>
-                    <p className="text-sm font-medium text-base-content">Email</p>
+                    <p className="text-sm font-medium text-base-content">
+                      Email
+                    </p>
                     <p className="text-sm">support@microtask.com</p>
                   </div>
                 </div>
-                
+
                 <div className="flex items-center gap-3 text-base-content/70">
                   <div className="w-10 h-10 bg-secondary/20 rounded-lg flex items-center justify-center">
                     <FaPhone className="w-4 h-4 text-secondary" />
                   </div>
                   <div>
-                    <p className="text-sm font-medium text-base-content">Phone</p>
+                    <p className="text-sm font-medium text-base-content">
+                      Phone
+                    </p>
                     <p className="text-sm">+880 1234-567890</p>
                   </div>
                 </div>
@@ -187,7 +227,9 @@ const Footer = () => {
                     <FaMapMarkerAlt className="w-4 h-4 text-accent" />
                   </div>
                   <div>
-                    <p className="text-sm font-medium text-base-content">Location</p>
+                    <p className="text-sm font-medium text-base-content">
+                      Location
+                    </p>
                     <p className="text-sm">Dhaka, Bangladesh</p>
                   </div>
                 </div>
@@ -195,14 +237,36 @@ const Footer = () => {
 
               {/* Social Media */}
               <div>
-                <h4 className="text-base-content font-semibold mb-3">Follow Us</h4>
+                <h4 className="text-base-content font-semibold mb-3">
+                  Follow Us
+                </h4>
                 <div className="flex gap-3 flex-wrap">
                   {[
-                    { icon: FaLinkedin, color: "hover:text-blue-600", href: "https://linkedin.com" },
-                    { icon: FaFacebook, color: "hover:text-blue-500", href: "https://facebook.com" },
-                    { icon: FaTwitter, color: "hover:text-sky-500", href: "https://twitter.com" },
-                    { icon: FaInstagram, color: "hover:text-pink-500", href: "https://instagram.com" },
-                    { icon: FaGithub, color: "hover:text-gray-600", href: "https://github.com" }
+                    {
+                      icon: FaLinkedin,
+                      color: "hover:text-blue-600",
+                      href: "https://linkedin.com",
+                    },
+                    {
+                      icon: FaFacebook,
+                      color: "hover:text-blue-500",
+                      href: "https://facebook.com",
+                    },
+                    {
+                      icon: FaTwitter,
+                      color: "hover:text-sky-500",
+                      href: "https://twitter.com",
+                    },
+                    {
+                      icon: FaInstagram,
+                      color: "hover:text-pink-500",
+                      href: "https://instagram.com",
+                    },
+                    {
+                      icon: FaGithub,
+                      color: "hover:text-gray-600",
+                      href: "https://github.com",
+                    },
                   ].map((social, index) => (
                     <a
                       key={index}
@@ -232,19 +296,28 @@ const Footer = () => {
                   Made with ❤️ for the community
                 </p>
               </div>
-              
+
               <div className="flex flex-col sm:flex-row items-center gap-4">
                 {/* Legal Links */}
                 <div className="flex items-center gap-4 text-sm text-base-content/60 flex-wrap justify-center">
-                  <Link to="/privacy" className="hover:text-primary transition-colors duration-300">
+                  <Link
+                    to="/privacy"
+                    className="hover:text-primary transition-colors duration-300"
+                  >
                     Privacy Policy
                   </Link>
                   <span>•</span>
-                  <Link to="/terms" className="hover:text-primary transition-colors duration-300">
+                  <Link
+                    to="/terms"
+                    className="hover:text-primary transition-colors duration-300"
+                  >
                     Terms of Service
                   </Link>
                   <span>•</span>
-                  <Link to="/cookies" className="hover:text-primary transition-colors duration-300">
+                  <Link
+                    to="/cookies"
+                    className="hover:text-primary transition-colors duration-300"
+                  >
                     Cookies
                   </Link>
                 </div>

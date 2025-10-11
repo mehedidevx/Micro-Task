@@ -16,7 +16,7 @@ const useUserRole = () => {
         enabled: !authLoading && !!user?.email,
         queryFn: async () => {
             const res = await axios.get(`/users/${user.email}/role`);
-             console.log('Role API response:', res.data);
+             
             return res.data.role;
         },
     });

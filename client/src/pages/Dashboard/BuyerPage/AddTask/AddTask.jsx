@@ -78,8 +78,8 @@ const AddTask = () => {
         toast.error("❌ Failed to add task.");
       }
     } catch (error) {
-      console.error("Task submission error:", error);
-      toast.error("❌ Failed to add task.");
+      
+      toast.error("❌ Failed to add task.", error);
     }
   };
 

@@ -18,6 +18,9 @@ import {
   FaEye,
   FaStar,
   FaShieldAlt,
+  FaBan,
+  FaTasks,
+  FaChartLine,
 } from 'react-icons/fa';
 import { HiSparkles } from 'react-icons/hi';
 import { BiTask } from 'react-icons/bi';
@@ -134,6 +137,7 @@ const TaskDetails = () => {
   }
 
   const daysLeft = getDaysLeft(task?.completion_date);
+  const isTaskExpired = daysLeft < 0;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-base-100 via-base-200/30 to-base-100">
@@ -151,7 +155,7 @@ const TaskDetails = () => {
           Back to Tasks
         </motion.button>
 
-        <div className="max-w-5xl mx-auto">
+        <div className="max-w-6xl mx-auto">
           
           {/* Header Section */}
           <motion.div
@@ -208,12 +212,21 @@ const TaskDetails = () => {
 
                   {/* Status Badge */}
                   <div className="absolute top-6 right-6">
-                    <div className="px-4 py-2 bg-success/90 backdrop-blur-sm rounded-full shadow-lg">
-                      <span className="text-white font-bold flex items-center gap-2">
-                        <FaCheckCircle className="w-4 h-4" />
-                        AVAILABLE
-                      </span>
-                    </div>
+                    {isTaskExpired ? (
+                      <div className="px-4 py-2 bg-error/90 backdrop-blur-sm rounded-full shadow-lg">
+                        <span className="text-white font-bold flex items-center gap-2">
+                          <FaBan className="w-4 h-4" />
+                          EXPIRED
+                        </span>
+                      </div>
+                    ) : (
+                      <div className="px-4 py-2 bg-success/90 backdrop-blur-sm rounded-full shadow-lg">
+                        <span className="text-white font-bold flex items-center gap-2">
+                          <FaCheckCircle className="w-4 h-4" />
+                          AVAILABLE
+                        </span>
+                      </div>
+                    )}
                   </div>
 
                   {/* Title Overlay */}
@@ -240,15 +253,15 @@ const TaskDetails = () => {
                     </div>
 
                     {/* Deadline Info */}
-                    <div className="flex items-center gap-4 p-4 bg-gradient-to-r from-warning/10 to-warning/5 rounded-xl border border-warning/20">
-                      <div className="w-12 h-12 bg-gradient-to-r from-warning to-error rounded-full flex items-center justify-center">
+                    <div className={`flex items-center gap-4 p-4 bg-gradient-to-r ${isTaskExpired ? 'from-error/10 to-error/5 border-error/20' : 'from-warning/10 to-warning/5 border-warning/20'} rounded-xl border`}>
+                      <div className={`w-12 h-12 bg-gradient-to-r ${isTaskExpired ? 'from-error to-red-600' : 'from-warning to-error'} rounded-full flex items-center justify-center`}>
                         <FaCalendarAlt className="w-6 h-6 text-white" />
                       </div>
                       <div>
                         <p className="text-sm text-base-content/60">Deadline</p>
                         <p className="font-bold text-lg text-base-content">{formatDate(task?.completion_date)}</p>
-                        <p className={`text-sm font-medium ${daysLeft > 7 ? 'text-success' : daysLeft > 3 ? 'text-warning' : 'text-error'}`}>
-                          {daysLeft > 0 ? `${daysLeft} days left` : 'Overdue'}
+                        <p className={`text-sm font-medium ${isTaskExpired ? 'text-error' : daysLeft > 7 ? 'text-success' : daysLeft > 3 ? 'text-warning' : 'text-error'}`}>
+                          {isTaskExpired ? 'Task Expired' : `${daysLeft} days left`}
                         </p>
                       </div>
                     </div>
@@ -263,6 +276,37 @@ const TaskDetails = () => {
                     <p className="text-base-content/80 leading-relaxed">
                       {task?.task_detail || "No detailed description provided for this task."}
                     </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Additional Task Info */}
+              <div className="bg-gradient-to-br from-base-100 to-base-200/50 backdrop-blur-xl rounded-3xl border border-base-content/10 p-8">
+                <h3 className="text-xl font-bold text-base-content mb-6 flex items-center gap-2">
+                  <FaTasks className="w-5 h-5 text-primary" />
+                  Requirements & Guidelines
+                </h3>
+                <div className="space-y-4">
+                  <div className="flex items-start gap-3 p-4 bg-base-200/50 rounded-xl">
+                    <FaCheckCircle className="w-5 h-5 text-success mt-1" />
+                    <div>
+                      <p className="font-semibold text-base-content">Quality Standards</p>
+                      <p className="text-base-content/70 text-sm">Ensure all work meets the specified requirements and quality standards</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3 p-4 bg-base-200/50 rounded-xl">
+                    <FaCheckCircle className="w-5 h-5 text-success mt-1" />
+                    <div>
+                      <p className="font-semibold text-base-content">Timely Submission</p>
+                      <p className="text-base-content/70 text-sm">Submit your work before the deadline to be eligible for payment</p>
+                    </div>
+                  </div>
+                  <div className="flex items-start gap-3 p-4 bg-base-200/50 rounded-xl">
+                    <FaCheckCircle className="w-5 h-5 text-success mt-1" />
+                    <div>
+                      <p className="font-semibold text-base-content">Clear Documentation</p>
+                      <p className="text-base-content/70 text-sm">Provide detailed documentation of your completed work</p>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -318,13 +362,13 @@ const TaskDetails = () => {
                   </div>
 
                   {/* Time Left */}
-                  <div className={`bg-gradient-to-r ${daysLeft > 7 ? 'from-success/10 to-success/5' : daysLeft > 3 ? 'from-warning/10 to-warning/5' : 'from-error/10 to-error/5'} rounded-xl p-4 border ${daysLeft > 7 ? 'border-success/20' : daysLeft > 3 ? 'border-warning/20' : 'border-error/20'}`}>
+                  <div className={`bg-gradient-to-r ${isTaskExpired ? 'from-error/10 to-error/5 border-error/20' : daysLeft > 7 ? 'from-success/10 to-success/5 border-success/20' : daysLeft > 3 ? 'from-warning/10 to-warning/5 border-warning/20' : 'from-error/10 to-error/5 border-error/20'} rounded-xl p-4 border`}>
                     <div className="flex items-center gap-3">
-                      <FaClock className={`w-6 h-6 ${daysLeft > 7 ? 'text-success' : daysLeft > 3 ? 'text-warning' : 'text-error'}`} />
+                      <FaClock className={`w-6 h-6 ${isTaskExpired ? 'text-error' : daysLeft > 7 ? 'text-success' : daysLeft > 3 ? 'text-warning' : 'text-error'}`} />
                       <div>
                         <p className="text-sm text-base-content/60">Time Remaining</p>
-                        <p className={`font-bold text-xl ${daysLeft > 7 ? 'text-success' : daysLeft > 3 ? 'text-warning' : 'text-error'}`}>
-                          {daysLeft > 0 ? `${daysLeft} days` : 'Overdue'}
+                        <p className={`font-bold text-xl ${isTaskExpired ? 'text-error' : daysLeft > 7 ? 'text-success' : daysLeft > 3 ? 'text-warning' : 'text-error'}`}>
+                          {isTaskExpired ? 'Expired' : `${daysLeft} days`}
                         </p>
                       </div>
                     </div>
@@ -334,7 +378,28 @@ const TaskDetails = () => {
 
               {/* Submission Section */}
               <div className="bg-gradient-to-br from-base-100 to-base-200/50 backdrop-blur-xl rounded-3xl border border-base-content/10 p-6">
-                {alreadySubmitted ? (
+                {isTaskExpired ? (
+                  <motion.div
+                    className="text-center"
+                    initial={{ scale: 0.9 }}
+                    animate={{ scale: 1 }}
+                  >
+                    <div className="w-16 h-16 bg-gradient-to-r from-error to-red-600 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <FaBan className="w-8 h-8 text-white" />
+                    </div>
+                    <h3 className="text-xl font-bold text-error mb-2">Task Has Expired</h3>
+                    <p className="text-base-content/70 mb-4">
+                      The deadline for this task has passed. Submissions are no longer accepted.
+                    </p>
+                    <button
+                      onClick={() => navigate('/dashboard/taskList')}
+                      className="btn btn-error btn-sm rounded-full"
+                    >
+                      <FaTasks className="w-4 h-4 mr-2" />
+                      Browse Other Tasks
+                    </button>
+                  </motion.div>
+                ) : alreadySubmitted ? (
                   <motion.div
                     className="text-center"
                     initial={{ scale: 0.9 }}
@@ -397,6 +462,39 @@ const TaskDetails = () => {
                     </motion.button>
                   </form>
                 )}
+              </div>
+
+              {/* Task Progress */}
+              <div className="bg-gradient-to-br from-base-100 to-base-200/50 backdrop-blur-xl rounded-3xl border border-base-content/10 p-6">
+                <h3 className="text-xl font-bold text-base-content mb-6 flex items-center gap-2">
+                  <FaChartLine className="w-5 h-5 text-primary" />
+                  Task Progress
+                </h3>
+                <div className="space-y-4">
+                  <div>
+                    <div className="flex justify-between mb-2">
+                      <span className="text-sm text-base-content/70">Completion Rate</span>
+                      <span className="text-sm font-bold text-primary">75%</span>
+                    </div>
+                    <progress className="progress progress-primary w-full" value="75" max="100"></progress>
+                  </div>
+                  <div>
+                    <div className="flex justify-between mb-2">
+                      <span className="text-sm text-base-content/70">Submissions</span>
+                      <span className="text-sm font-bold text-info">12/{task?.required_workers}</span>
+                    </div>
+                    <progress className="progress progress-info w-full" value="12" max={task?.required_workers}></progress>
+                  </div>
+                  <div className="pt-4 space-y-3">
+                    <div className="flex items-center justify-between p-3 rounded-xl bg-base-200/50">
+                      <span className="text-base-content/70 text-sm">Average Rating</span>
+                      <div className="flex items-center gap-1">
+                        <FaStar className="w-4 h-4 text-warning" />
+                        <span className="font-bold text-base-content">4.8</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
 
               {/* Help Section */}

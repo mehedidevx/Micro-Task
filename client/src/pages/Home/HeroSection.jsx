@@ -50,7 +50,7 @@ const HeroSection = () => {
   }, []);
 
   const StatCard = ({ icon: Icon, value, label, gradient }) => (
-    <div className="bg-base-200 hover:bg-base-300 rounded-2xl p-6 border border-base-300 transition-all duration-300 hover:scale-105 hover:shadow-xl group">
+    <div className="bg-base-200 hover:bg-base-300 rounded-2xl p-6 border border-base-300 transition-all duration-300  group">
       <div className="flex items-center gap-4">
         <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${gradient} flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all`}>
           <Icon className="w-7 h-7 text-white" />
@@ -134,17 +134,20 @@ const HeroSection = () => {
                   {/* Action Buttons */}
                   <div className="flex flex-col sm:flex-row gap-4 pt-4">
                     <Link to={user ? "/dashboard" : "/login"}>
-                      <button className={`btn btn-lg px-8 bg-gradient-to-r ${slide.gradient} border-none text-white hover:opacity-90 rounded-2xl shadow-2xl hover:shadow-primary/50 transition-all duration-300 hover:scale-105 group`}>
+                      <button className={`btn btn-lg px-8 
+                        btn-primary  text-white hover:opacity-90 rounded-2xl   transition-all duration-300  group`}>
                         <slide.icon className="w-5 h-5 group-hover:animate-bounce" />
                         {slide.primaryAction}
                         <FaArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />
                       </button>
                     </Link>
                     
-                    <button className="btn btn-lg btn-outline px-8 rounded-2xl transition-all duration-300 hover:scale-105">
+                    <Link to={"/tasks"}>
+                    <button className="btn btn-lg btn-secondary px-8 rounded-2xl transition-all duration-300 ">
                       <FaPlay className="w-4 h-4" />
                       {slide.secondaryAction}
                     </button>
+                    </Link>
                   </div>
 
                   {/* Trust Indicators */}
@@ -224,7 +227,7 @@ const HeroSection = () => {
       </div>
 
       {/* Navigation Dots */}
-      <div className="absolute bottom-12 left-1/2 transform -translate-x-1/2 z-20">
+      <div className="absolute hidden md:block bottom-12 left-1/2 transform -translate-x-1/2 z-20">
         <div className="flex items-center gap-3 bg-base-200 backdrop-blur-lg px-6 py-3 rounded-full border border-base-300 shadow-xl">
           {slides.map((_, index) => (
             <button
